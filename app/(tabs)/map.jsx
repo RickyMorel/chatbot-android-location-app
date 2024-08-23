@@ -1,14 +1,15 @@
 import { Text, View } from 'react-native'
 import React, { Component } from 'react'
+import MapComponent from '../../components/MapComponent'
 
-export class Bookmark extends Component {
+export class Map extends Component {
   render() {
     return (
       <View>
-        <Text>Bookmark</Text>
+        <MapComponent/>
       </View>
     )
   }
 }
 
-export default Bookmark
+export default Map

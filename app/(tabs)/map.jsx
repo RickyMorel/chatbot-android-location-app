@@ -19,10 +19,10 @@ export class Map extends Component {
   }
 
   componentDidMount() {
-    //this.fetchOrderData()
-    this.setState({
-      orders: [1, 2, 3, 4, 5, 6]
-    })
+    this.fetchOrderData()
+    // this.setState({
+    //   orders: [1, 2, 3, 4, 5, 6]
+    // })
   }
 
   fetchOrderData = async () => {
@@ -47,15 +47,15 @@ export class Map extends Component {
   };
 
   render() {
+    const locations = this.state?.orders?.map(x => ({ name: x.name, totalSold: x.totalSold, locationDto: x.locationDto}))
+
     return (
       <View>
-        {/* <MapComponent/> */}
-        <View className="bg-primary h-[100px] bottom-0 left-0 right-0">
-          <View className="my-6 px-4 space-y-6">
-            <View className="w-full flex-1 pt-5 pb-8">
-              <CardsView posts={this.state?.orders ?? []}/>
-            </View>
-          </View>
+        <View className="w-full h-full">
+          <MapComponent orderLocations={locations ?? []}/>
+        </View>
+        <View className="w-full h-[100px] absolute bottom-0 bg-primary">
+          <CardsView posts={this.state?.orders ?? []}/>
         </View>
       </View>
     )

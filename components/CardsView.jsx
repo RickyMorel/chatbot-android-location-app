@@ -61,8 +61,6 @@ export class CardsView extends Component {
   render() {
     const {posts} = this.props
 
-    console.log("posts", posts)
-
     return (
       <FlatList
         data={posts}

@@ -2,6 +2,7 @@ import { FlatList, ImageBackground, Text, View, TouchableOpacity, Image } from '
 import React, { Component } from 'react'
 import * as Animatable from 'react-native-animatable'
 import { icons } from '../constants'
+import OrderCard from './OrderCard'
 
 const zoomIn = {
   0: {
@@ -60,12 +61,14 @@ export class CardsView extends Component {
   render() {
     const {posts} = this.props
 
+    console.log("posts", posts)
+
     return (
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id}
         renderItem={({item}) => (
-            <TrendingItem activeItem={this.state.activeItem} item={item}/>
+            <OrderCard activeItem={this.state.activeItem} item={item}/>
         )}
         horizontal
         onViewableItemsChanged={this.onViewableItemsChanged}

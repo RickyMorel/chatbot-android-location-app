@@ -4,14 +4,13 @@ import { StyleSheet, View } from 'react-native';
 
 class MapComponent extends Component {
   render() {
-    const {orderLocations} = this.props
+    const asuncionPos = {lat: -25.291247, lng: -57.594025}
+    const {orderLocations, userLocation} = this.props
     const allMarkers = orderLocations.map(x => {
-      console.log("x.locationDto?.location?", x.locationDto?.location);
-
-      return ( // Return the JSX element
+      return ( 
         <Marker
-          key={x.id} // It's a good practice to add a unique key for each Marker
-          coordinate={{ latitude: x.locationDto?.location?.lat ?? 37.78825, longitude: x.locationDto?.location?.lng ?? -122.4324 }}
+          key={x.id}
+          coordinate={{ latitude: x.locationDto?.location?.lat, longitude: x.locationDto?.location?.lng}}
           title={x.name}
           description={`${Intl.NumberFormat('de-DE').format(x.totalSold)}gs`}
         />
@@ -22,12 +21,10 @@ class MapComponent extends Component {
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          initialRegion={{
-            latitude: orderLocations[0]?.locationDto?.location?.lat ?? 37.78825, // Initial latitude
-            longitude: orderLocations[0]?.locationDto?.location?.lng ?? -122.4324, // Initial longitude
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
+          initialRegion={userLocation}
+          region={userLocation}
+          userLocation={userLocation}
+          showsUserLocation={true}
         >
           {allMarkers}
         </MapView>

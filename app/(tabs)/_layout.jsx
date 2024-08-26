@@ -23,8 +23,8 @@ const TabsLayout = () => {
         <Tabs.Screen name="sales" options={{title: 'Ventas', headerShown: false, tabBarIcon: ({color, focused}) => (
             <TabIcon icon={icons.bookmark} color={color} name="Ventas" focused={focused}/>
         )}}/>
-        <Tabs.Screen name="create" options={{title: 'Create', headerShown: false, tabBarIcon: ({color, focused}) => (
-            <TabIcon icon={icons.plus} color={color} name="Create" focused={focused}/>
+        <Tabs.Screen name="stock" options={{title: 'Stock', headerShown: false, tabBarIcon: ({color, focused}) => (
+            <TabIcon icon={icons.plus} color={color} name="Stock" focused={focused}/>
         )}}/>
         <Tabs.Screen name="inventory" options={{title: 'Inventario', headerShown: false, tabBarIcon: ({color, focused}) => (
             <TabIcon icon={icons.profile} color={color} name="Inventario" focused={focused}/>

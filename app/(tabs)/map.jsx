@@ -30,7 +30,6 @@ export class Map extends Component {
       }
       
       let location = await Location.getCurrentPositionAsync({});
-      console.log("userLocation", location.coords.latitude, location.coords.longitude)
       this.setState({
         userLocation: {
           latitude: location.coords.latitude,

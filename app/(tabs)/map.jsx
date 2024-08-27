@@ -19,6 +19,7 @@ export class Map extends Component {
   componentDidMount() {
     this.requestLocationPermission();
     this.fetchOrderData();
+    this.fetchStoreLocation()
   }
 
   requestLocationPermission = async () => {
@@ -63,6 +64,26 @@ export class Map extends Component {
     }
   };
 
+  fetchStoreLocation = async () => {
+    this.setState({
+      isLoading: true,
+    });
+
+    try {
+      const url = `http://192.168.100.4:3000/client-location/getLocationByNumber?phoneNumber=STORE`;
+      const response = await axios.get(url);
+      this.setState({
+        storeLocation: response.data,
+      });
+    } catch (error) {
+      console.log('Error:', error.message);
+    } finally {
+      this.setState({
+        isLoading: false,
+      });
+    }
+  };
+
   render() {
     const { orders, userLocation } = this.state;
     const locations = orders?.map(x => ({
@@ -74,7 +95,7 @@ export class Map extends Component {
     return (
       <View>
         <View className="w-full h-full">
-          <MapComponent orderLocations={locations ?? []} userLocation={userLocation}/>
+          <MapComponent orderLocations={locations ?? []} storeLocation={this.state.storeLocation} userLocation={userLocation}/>
         </View>
         <View className="w-full h-[100px] absolute bottom-0 bg-primary">
           <CardsView posts={this.state?.orders ?? []}/>

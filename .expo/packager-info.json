@@ -1,3 +1,5 @@
 {
-  "devToolsPort": 19002
+  "devToolsPort": 19002,
+  "packagerPort": null,
+  "packagerPid": null
 }

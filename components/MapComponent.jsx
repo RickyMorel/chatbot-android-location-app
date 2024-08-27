@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { StyleSheet, View, Button, Linking } from 'react-native';
+import { StyleSheet, View, Button, Linking, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import axios from 'axios';
+import { icons, images } from '../constants';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A';
 
@@ -20,6 +22,8 @@ class MapComponent extends Component {
     this.setState({
       userLocation: this.props.userLocation
     })
+
+    this.fetchRoute()
   }
 
   fitToMarkers = () => {
@@ -38,38 +42,101 @@ class MapComponent extends Component {
   };
 
   openGoogleMaps = () => {
-    const { userLocation } = this.state;
-    const { orderLocations } = this.props;
+    const { orderLocations, userLocation, storeLocation } = this.props;
 
+    console.log("storeLocation", storeLocation)
+  
     if (userLocation && orderLocations.length > 0) {
-      const destination = orderLocations[0];
-      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.latitude},${userLocation.longitude}&destination=${destination.locationDto.location.lat},${destination.locationDto.location.lng}&travelmode=driving`;
+      const waypoints = orderLocations.map(location => `via:${location.locationDto.location.lat},${location.locationDto.location.lng}`).join('|');
+      const destination = storeLocation;
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.latitude},${userLocation.longitude}&destination=${destination.locationDto.location.lat},${destination.locationDto.location.lng}&waypoints=${waypoints}&travelmode=driving`;
       Linking.openURL(url);
     }
   };
 
-  render() {
-    const { orderLocations } = this.props;
+// Add this method to your component
+fetchRoute = async () => {
+  console.log("fetchRoute")
 
-    const allMarkers = orderLocations.map(x => (
-      <Marker
-        key={x.id}
-        coordinate={{ latitude: x.locationDto?.location?.lat, longitude: x.locationDto?.location?.lng }}
-        title={x.name}
-        description={`${Intl.NumberFormat('de-DE').format(x.totalSold)}gs`}
-      />
-    ));
+  const { orderLocations, userLocation, storeLocation } = this.props;
 
-    const destination = orderLocations.length > 0 
-      ? {
-          latitude: orderLocations[0].locationDto?.location?.lat,
-          longitude: orderLocations[0].locationDto?.location?.lng,
-        }
-      : null;
+  console.log("orderLocations", orderLocations)
+  console.log("userLocation", userLocation)
+  console.log("storeLocation", storeLocation)
 
-    return (
+  if (userLocation && orderLocations.length > 0) {
+    console.log("if (userLocation && orderLocations.length > 0")
+    const waypoints = orderLocations.map(location => `via:${location.locationDto.location.lat},${location.locationDto.location.lng}`).join('|');
+    console.log("waypoints", waypoints)
+    const destination = storeLocation;
+    console.log("destination", destination)
+    const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${userLocation.latitude},${userLocation.longitude}&destination=${destination.location.lat},${destination.location.lng}&waypoints=${waypoints}&key=${GOOGLE_MAPS_APIKEY}`;
+    console.log("fetchRoute url", url)
+
+
+    try {
+      const response = await axios.get(url);
+      console.log("fetchRoute response", response)
+      const points = response.data.routes[0].overview_polyline.points;
+      const decodedPoints = this.decodePolyline(points);
+
+      this.setState({ routeCoordinates: decodedPoints });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
+
+// Decode polyline
+decodePolyline = (t) => {
+  const coordinates = [];
+  let index = 0, lat = 0, lng = 0;
+
+  while (index < t.length) {
+    let b, shift = 0, result = 0;
+    do {
+      b = t.charCodeAt(index++) - 63;
+      result |= (b & 0x1f) << shift;
+      shift += 5;
+    } while (b >= 0x20);
+    const dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
+    lat += dlat;
+
+    shift = 0;
+    result = 0;
+    do {
+      b = t.charCodeAt(index++) - 63;
+      result |= (b & 0x1f) << shift;
+      shift += 5;
+    } while (b >= 0x20);
+    const dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
+    lng += dlng;
+
+    coordinates.push({
+      latitude: (lat / 1E5),
+      longitude: (lng / 1E5)
+    });
+  }
+  return coordinates;
+};
+
+// In your render method, add a Polyline
+render() {
+  const { routeCoordinates } = this.state;
+  const { orderLocations, storeLocation } = this.props;
+
+  const allMarkers = orderLocations.map(x => (
+    <Marker
+      key={x.id}
+      coordinate={{ latitude: x.locationDto?.location?.lat, longitude: x.locationDto?.location?.lng }}
+      title={x.name}
+      description={`${Intl.NumberFormat('de-DE').format(x.totalSold)}gs`}
+    />
+  ));
+
+  return (
       <View style={styles.container} className="items-center justify-center">
-        {/* <MapView
+        <MapView
           ref={this.mapRef}
           style={styles.map}
           initialRegion={this.state?.userLocation}
@@ -77,20 +144,31 @@ class MapComponent extends Component {
         >
           {allMarkers}
 
-          {destination && (
-            <MapViewDirections
-              origin={this.state?.userLocation}
-              destination={destination}
-              apikey={GOOGLE_MAPS_APIKEY}
+          <Marker
+            key={"Store"}
+            coordinate={{ latitude: storeLocation?.location?.lat, longitude: storeLocation?.location?.lng }}
+            title={"Tienda"}
+            description={`Tu local`}
+          >
+            <View style={{ width: 30, height: 30 }}>
+              <Image
+                source={icons.storeMapIcon}
+                style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+              />
+            </View>
+          </Marker>
+
+          {routeCoordinates && (
+            <Polyline
+              coordinates={routeCoordinates}
               strokeWidth={3}
               strokeColor="hotpink"
-              mode="DRIVING"
             />
           )}
-        </MapView> */}
-        <SafeAreaView>
+        </MapView>
+        {/* <SafeAreaView>
           <Button title="Open in Google Maps" className='w-[100px] h-[200px] absolute' onPress={this.openGoogleMaps} />
-        </SafeAreaView>
+        </SafeAreaView> */}
       </View>
     );
   }

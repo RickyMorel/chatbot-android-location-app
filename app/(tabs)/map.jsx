@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { View, Alert } from 'react-native';
+import { View, Alert, TouchableOpacity, Text } from 'react-native';
 import CardsView from '../../components/CardsView';
 import MapComponent from '../../components/MapComponent';
 import * as Location from 'expo-location';
+import CustomButton from '../../components/CustomButton';
 
 export class Map extends Component {
   constructor() {
@@ -96,6 +97,9 @@ export class Map extends Component {
       <View>
         <View className="w-full h-full">
           <MapComponent orderLocations={locations ?? []} storeLocation={this.state.storeLocation} userLocation={userLocation}/>
+          <View className="w-[150px] h-[100px] mt-6 mr-2 absolute bottom-[50px] right-0">
+            <CustomButton title="Empezar Ruta"/>
+          </View>
         </View>
         <View className="w-full h-[100px] absolute bottom-0 bg-primary">
           <CardsView posts={this.state?.orders ?? []}/>

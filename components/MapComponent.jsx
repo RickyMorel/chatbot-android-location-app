@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import MapView, { Marker, Polyline } from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
-import { StyleSheet, View, Button, Linking, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
-import { icons, images } from '../constants';
+import React, { Component } from 'react';
+import { Image, Linking, StyleSheet, View } from 'react-native';
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import { icons } from '../constants';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A';
 
@@ -22,8 +20,13 @@ class MapComponent extends Component {
     this.setState({
       userLocation: this.props.userLocation
     })
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps == this.props) {return;}
 
     this.fetchRoute()
+    this.fitToMarkers()
   }
 
   fitToMarkers = () => {
@@ -166,6 +169,8 @@ render() {
             />
           )}
         </MapView>
+      
+
         {/* <SafeAreaView>
           <Button title="Open in Google Maps" className='w-[100px] h-[200px] absolute' onPress={this.openGoogleMaps} />
         </SafeAreaView> */}

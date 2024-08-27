@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Image, Linking, StyleSheet, View } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { icons } from '../constants';
+import CustomButton from './CustomButton';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A';
 
@@ -44,16 +45,30 @@ class MapComponent extends Component {
     }
   };
 
-  openGoogleMaps = () => {
+  openGoogleMaps = async () => {
     const { orderLocations, userLocation, storeLocation } = this.props;
-
-    console.log("storeLocation", storeLocation)
   
-    if (userLocation && orderLocations.length > 0) {
-      const waypoints = orderLocations.map(location => `via:${location.locationDto.location.lat},${location.locationDto.location.lng}`).join('|');
-      const destination = storeLocation;
-      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.latitude},${userLocation.longitude}&destination=${destination.locationDto.location.lat},${destination.locationDto.location.lng}&waypoints=${waypoints}&travelmode=driving`;
-      Linking.openURL(url);
+    if (userLocation && orderLocations.length > 0 && storeLocation) {
+      try {
+        const waypoints = orderLocations
+          .map(location => `${location.locationDto.location.lat},${location.locationDto.location.lng}`)
+          .join('|');
+        const destination = storeLocation;
+        const url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(userLocation.latitude)},${encodeURIComponent(userLocation.longitude)}&destination=${encodeURIComponent(destination.location.lat)},${encodeURIComponent(destination.location.lng)}&waypoints=${encodeURIComponent(waypoints)}&travelmode=driving`;
+  
+        // Check if the URL can be opened
+        const supported = await Linking.canOpenURL(url);
+        if (supported) {
+          await Linking.openURL(url);
+        } else {
+          Alert.alert("Error", "Unable to open Google Maps");
+        }
+      } catch (error) {
+        Alert.alert("Error", "An error occurred while opening Google Maps");
+        console.error("Error opening Google Maps:", error);
+      }
+    } else {
+      Alert.alert("Error", "Missing location data");
     }
   };
 
@@ -171,6 +186,9 @@ render() {
         </MapView>
       
 
+        <View className="w-[150px] h-[100px] mt-6 mr-2 absolute bottom-[50px] right-0">
+          <CustomButton title="Empezar Ruta" handlePress={this.openGoogleMaps}/>
+        </View>
         {/* <SafeAreaView>
           <Button title="Open in Google Maps" className='w-[100px] h-[200px] absolute' onPress={this.openGoogleMaps} />
         </SafeAreaView> */}

@@ -12,7 +12,8 @@ class MapComponent extends Component {
     super(props);
 
     this.state = {
-      userLocation: undefined
+      userLocation: undefined,
+      optimizedOrderLocations: []
     }
     this.mapRef = React.createRef();
   }
@@ -50,7 +51,7 @@ class MapComponent extends Component {
   
     if (userLocation && orderLocations.length > 0 && storeLocation) {
       try {
-        const waypoints = orderLocations
+        const waypoints = this.state.optimizedWaypoints
           .map(location => `${location.locationDto.location.lat},${location.locationDto.location.lng}`)
           .join('|');
         const destination = storeLocation;
@@ -74,31 +75,38 @@ class MapComponent extends Component {
 
 // Add this method to your component
 fetchRoute = async () => {
-  console.log("fetchRoute")
+  console.log("fetchRoute");
 
   const { orderLocations, userLocation, storeLocation } = this.props;
 
-  console.log("orderLocations", orderLocations)
-  console.log("userLocation", userLocation)
-  console.log("storeLocation", storeLocation)
+  // console.log("orderLocations", orderLocations);
+  // console.log("userLocation", userLocation);
+  // console.log("storeLocation", storeLocation);
 
   if (userLocation && orderLocations.length > 0) {
-    console.log("if (userLocation && orderLocations.length > 0")
-    const waypoints = orderLocations.map(location => `via:${location.locationDto.location.lat},${location.locationDto.location.lng}`).join('|');
-    console.log("waypoints", waypoints)
+    // Prepare waypoints with 'optimize:true'
+    const waypoints = `optimize:true|${orderLocations.map(location => `${location.locationDto.location.lat},${location.locationDto.location.lng}`).join('|')}`; 
     const destination = storeLocation;
-    console.log("destination", destination)
-    const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${userLocation.latitude},${userLocation.longitude}&destination=${destination.location.lat},${destination.location.lng}&waypoints=${waypoints}&key=${GOOGLE_MAPS_APIKEY}`;
-    console.log("fetchRoute url", url)
 
+    // Build the URL with optimized waypoints
+    const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${userLocation.latitude},${userLocation.longitude}&destination=${destination.location.lat},${destination.location.lng}&waypoints=${waypoints}&key=${GOOGLE_MAPS_APIKEY}`;
 
     try {
       const response = await axios.get(url);
-      console.log("fetchRoute response", response)
-      const points = response.data.routes[0].overview_polyline.points;
-      const decodedPoints = this.decodePolyline(points);
+      if (response.data.status === 'OK') {
+        const points = response.data.routes[0].overview_polyline.points;
+        const decodedPoints = this.decodePolyline(points);
 
-      this.setState({ routeCoordinates: decodedPoints });
+        const optimizedOrder = response.data.routes[0].waypoint_order;
+        const optimizedWaypoints = optimizedOrder.map(index => orderLocations[index]);
+
+        console.log("optimizedOrder", optimizedOrder)
+        console.log("optimizedWaypoints", optimizedWaypoints)
+
+        this.setState({ routeCoordinates: decodedPoints, optimizedWaypoints: optimizedWaypoints });
+      } else {
+        console.error("Error in response:", response.data.status);
+      }
     } catch (error) {
       console.error(error);
     }

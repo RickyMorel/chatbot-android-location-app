@@ -75,8 +75,6 @@ class MapComponent extends Component {
 
 // Add this method to your component
 fetchRoute = async () => {
-  console.log("fetchRoute");
-
   const { orderLocations, userLocation, storeLocation } = this.props;
 
   // console.log("orderLocations", orderLocations);
@@ -99,9 +97,6 @@ fetchRoute = async () => {
 
         const optimizedOrder = response.data.routes[0].waypoint_order;
         const optimizedWaypoints = optimizedOrder.map(index => orderLocations[index]);
-
-        console.log("optimizedOrder", optimizedOrder)
-        console.log("optimizedWaypoints", optimizedWaypoints)
 
         this.setState({ routeCoordinates: decodedPoints, optimizedWaypoints: optimizedWaypoints });
       } else {

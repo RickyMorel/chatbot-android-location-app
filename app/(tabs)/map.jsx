@@ -1,10 +1,9 @@
 import axios from 'axios';
+import * as Location from 'expo-location';
 import React, { Component } from 'react';
-import { View, Alert, TouchableOpacity, Text } from 'react-native';
+import { Alert, View } from 'react-native';
 import CardsView from '../../components/CardsView';
 import MapComponent from '../../components/MapComponent';
-import * as Location from 'expo-location';
-import CustomButton from '../../components/CustomButton';
 
 export class Map extends Component {
   constructor() {

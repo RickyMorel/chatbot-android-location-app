@@ -5,7 +5,20 @@ class OrderCardView extends Component {
   render() {
     const { currentOrder, isOpen, closeCallback } = this.props;
 
-    console.log("currentOrder", currentOrder)
+    const cardViewItems = currentOrder?.order?.map((item, index) => (
+        // <View className="border-b border-gray-200">
+          <View className="flex flex-row justify-between px-4 py-2">
+            <Text className="text-gray-600 mr-3">{item.name}</Text>
+            <Text className="text-gray-600 mr-3">{item.amount}</Text>
+            <Text className="text-gray-600 mr-3">{Intl.NumberFormat('de-DE').format(item.price)}gs</Text>
+          </View>
+        // </View>
+        // <View key={index} className="mb-2 flex-row">
+        //   <Text className="text-black font-semibold">{item.name}</Text>
+        //   <Text className="text-gray-600">{item.amount}</Text>
+        //   <Text className="text-gray-600">{Intl.NumberFormat('de-DE').format(item.price)}gs</Text>
+        // </View>
+    ))
 
     return (
       <Modal
@@ -19,15 +32,15 @@ class OrderCardView extends Component {
             <Text className="text-center text-lg">
               {currentOrder?.name}
             </Text>
-            <View>
-            {currentOrder?.order?.map((item, index) => (
-                <View key={index} className="mb-2">
-                  <Text className="text-black font-semibold">{item.name}</Text>
-                  <Text className="text-gray-600">Cantidad: {item.amount}</Text>
-                  <Text className="text-gray-600">Precio: {Intl.NumberFormat('de-DE').format(item.price)}gs</Text>
+            <View className="border-b border-gray-200">
+                <View className="flex flex-row justify-between px-4 py-2">
+                    <Text className="text-black font-semibold mr-3">Nombre Item</Text>
+                    <Text className="text-black font-semibold mr-3">Cantidad</Text>
+                    <Text className="text-black font-semibold mr-3">Precio</Text>
                 </View>
-              ))}
+                {cardViewItems}
             </View>
+            <Text>Total: {currentOrder?.totalSold}</Text>
             <Pressable
               className="bg-red-500 rounded-full p-3 mt-4"
               onPress={closeCallback}

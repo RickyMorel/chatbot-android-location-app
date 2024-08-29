@@ -1,9 +1,9 @@
-import { TouchableOpacity, Text } from 'react-native'
+import { TouchableOpacity, Text, Image } from 'react-native'
 import React, { Component } from 'react'
 
 export class CustomButton extends Component {
   render() {
-    const {title, handlePress, containerStyles, textStyles, isLoading} = this.props
+    const {title, handlePress, containerStyles, textStyles, isLoading, icon} = this.props
 
     return (
       <TouchableOpacity 
@@ -12,7 +12,8 @@ export class CustomButton extends Component {
         activeOpacity={0.7}
         disabled={isLoading}
     >
-        <Text className={`text-primary font-psemibold text-lg ${textStyles}`}>{title}</Text>
+        {title ? <Text className={`text-primary font-psemibold text-lg ${textStyles}`}>{title}</Text> : <></>}
+        {icon ? <Image source={icon} style={{height: '70%', width: '70%'}} resizeMode='contain'/> : <></>}
       </TouchableOpacity>
     )
   }

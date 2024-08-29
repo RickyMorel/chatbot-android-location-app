@@ -6,8 +6,6 @@ export class SalesEntry extends Component {
   render() {
     const {sale} = this.props
 
-    console.log("sale", sale)
-
     const itemNames = sale.order.map(x => x.name)
     const namesJoined = itemNames.join(', ')
 
@@ -19,7 +17,7 @@ export class SalesEntry extends Component {
                     <Text className="ml-1 text-gray-600">{namesJoined}</Text>
                 </View>
             </View>
-            <Text className="text-gray-600 font-semibold ml-2">{`${Intl.NumberFormat('de-DE').format(sale.totalSold)}gs`}</Text>
+            <Text className="text-gray-600 font-semibold ml-2">{`${Intl.NumberFormat('de-DE').format(sale?.totalSold)}gs`}</Text>
       </View>
     )
   }

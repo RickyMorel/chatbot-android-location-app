@@ -37,7 +37,7 @@ export class Sales extends Component {
       const response = await axios.get(`http://192.168.100.4:3000/sales`);
 
       this.setState({
-        allSales: response.data,
+        allSales: [...response.data],
       })
     } catch (error) {console.log('Error:', error.message);} 
     finally {
@@ -48,6 +48,7 @@ export class Sales extends Component {
   };
 
   render() {
+    console.log("this.state.allSales", this.state.allSales)
     return (
       <SafeAreaView>
         <View className="flex-row items-center justify-center">
@@ -55,10 +56,10 @@ export class Sales extends Component {
           <Card title="Promedio" value={`${Intl.NumberFormat('de-DE').format(this.state?.totalMoney)}gs`}/> */}
         </View>
         <FlatList
-          data={this.state?.allSales}
+          data={this.state.allSales}
           keyExtractor={(sale) => sale.clientPhoneNumber}
-          renderItem={({sale}) => (
-              <SalesEntry sale={sale}/>
+          renderItem={(sale) => (
+              <SalesEntry sale={sale.item}/>
           )}
           viewabilityConfig={{
             itemVisiblePercentThreshold: 70

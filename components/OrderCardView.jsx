@@ -35,7 +35,7 @@ class OrderCardView extends Component {
                 <Rows data={tableData.tableData} textStyle={styles.text} />
             </Table>
             <View className="flex-row">
-              <Link href={`/create-sale?data=${serializedData}`} onPress={closeCallback} className='text-lg font-psemibold text-secondary'>Hacer Venta</Link>
+              <Link href={`/create-sale?data=${serializedData}`} onPress={closeCallback} className='text-lg font-psemibold text-secondary'><Text>Hacer Venta</Text></Link>
               {/* <Link href={`/create-sale`} className='text-lg font-psemibold text-secondary'>Hacer Venta</Link> */}
               <CustomButton title="Cerrar" handlePress={closeCallback}/>
             </View>

@@ -146,9 +146,11 @@ render() {
   const { routeCoordinates } = this.state;
   const { orderLocations, storeLocation } = this.props;
 
-  const allMarkers = orderLocations.map(x => (
+  console.log("orderLocations", orderLocations)
+
+  const allMarkers = orderLocations.map((x) => (
     <Marker
-      key={x.id}
+      key={x.locationDto.phoneNumber}
       coordinate={{ latitude: x.locationDto?.location?.lat, longitude: x.locationDto?.location?.lng }}
       title={x.name}
       description={`${Intl.NumberFormat('de-DE').format(x.totalSold)}gs`}

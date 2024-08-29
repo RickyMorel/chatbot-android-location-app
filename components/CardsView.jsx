@@ -25,7 +25,6 @@ export class CardsView extends Component {
   }
 
   onViewableItemsChanged = ({viewableItems}) => {
-    console.log("onViewableItemsChanged", viewableItems)
     if(viewableItems.length > 0) {
       this.setState({
         activeItem: viewableItems[0].item.phoneNumber

@@ -6,6 +6,8 @@ export class SalesEntry extends Component {
   render() {
     const {sale} = this.props
 
+    console.log("sale", sale)
+
     const itemNames = sale.order.map(x => x.name)
     const namesJoined = itemNames.join(', ')
 

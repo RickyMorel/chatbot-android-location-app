@@ -77,10 +77,6 @@ class MapComponent extends Component {
 fetchRoute = async () => {
   const { orderLocations, userLocation, storeLocation } = this.props;
 
-  // console.log("orderLocations", orderLocations);
-  // console.log("userLocation", userLocation);
-  // console.log("storeLocation", storeLocation);
-
   if (userLocation && orderLocations.length > 0) {
     // Prepare waypoints with 'optimize:true'
     const waypoints = `optimize:true|${orderLocations.map(location => `${location.locationDto.location.lat},${location.locationDto.location.lng}`).join('|')}`; 
@@ -145,8 +141,6 @@ decodePolyline = (t) => {
 render() {
   const { routeCoordinates } = this.state;
   const { orderLocations, storeLocation } = this.props;
-
-  console.log("orderLocations", orderLocations)
 
   const allMarkers = orderLocations.map((x) => (
     <Marker

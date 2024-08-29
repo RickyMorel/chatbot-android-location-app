@@ -1,24 +1,21 @@
 import React, { Component } from 'react';
-import { Modal, Text, Pressable, View, FlatList } from 'react-native';
+import { Modal, Text, Pressable, View, StyleSheet } from 'react-native';
+import { Table, Row, Rows } from 'react-native-table-component';
+import { Link } from 'expo-router';
+import CustomButton from './CustomButton';
 
 class OrderCardView extends Component {
   render() {
     const { currentOrder, isOpen, closeCallback } = this.props;
 
-    const cardViewItems = currentOrder?.order?.map((item, index) => (
-        // <View className="border-b border-gray-200">
-          <View className="flex flex-row justify-between px-4 py-2">
-            <Text className="text-gray-600 mr-3">{item.name}</Text>
-            <Text className="text-gray-600 mr-3">{item.amount}</Text>
-            <Text className="text-gray-600 mr-3">{Intl.NumberFormat('de-DE').format(item.price)}gs</Text>
-          </View>
-        // </View>
-        // <View key={index} className="mb-2 flex-row">
-        //   <Text className="text-black font-semibold">{item.name}</Text>
-        //   <Text className="text-gray-600">{item.amount}</Text>
-        //   <Text className="text-gray-600">{Intl.NumberFormat('de-DE').format(item.price)}gs</Text>
-        // </View>
-    ))
+    const tableData = {
+        tableHead: ['Nombre Item', 'Cantidad', 'Precio'],
+        tableData: currentOrder?.order?.map(x => {
+            return ([x.name, x.amount, `${Intl.NumberFormat('de-DE').format(x.price)}gs`])
+        }),
+    };
+
+    const serializedData = encodeURIComponent(JSON.stringify(currentOrder));
 
     return (
       <Modal
@@ -29,31 +26,31 @@ class OrderCardView extends Component {
       >
         <View className="flex-1 justify-center items-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)' }}>
           <View className="bg-white rounded-lg p-6">
-            <Text className="text-center text-lg">
-              {currentOrder?.name}
-            </Text>
-            <View className="border-b border-gray-200">
-                <View className="flex flex-row justify-between px-4 py-2">
-                    <Text className="text-black font-semibold mr-3">Nombre Item</Text>
-                    <Text className="text-black font-semibold mr-3">Cantidad</Text>
-                    <Text className="text-black font-semibold mr-3">Precio</Text>
-                </View>
-                {cardViewItems}
+            <View className="flex-row items-center">
+              <Text className="flex-1 text-lg">{currentOrder?.name}</Text>
+              <Text className="text-right">Total: {Intl.NumberFormat('de-DE').format(currentOrder?.totalSold)}gs</Text>
             </View>
-            <Text>Total: {currentOrder?.totalSold}</Text>
-            <Pressable
-              className="bg-red-500 rounded-full p-3 mt-4"
-              onPress={closeCallback}
-            >
-              <Text className="text-white font-bold text-center">
-                Hide Modal
-              </Text>
-            </Pressable>
+            <Table className="w-[300px]">
+                <Row data={tableData.tableHead} style={styles.head} textStyle={styles.headText} />
+                <Rows data={tableData.tableData} textStyle={styles.text} />
+            </Table>
+            <View className="flex-row">
+              <Link href={`/create-sale?data=${serializedData}`} onPress={closeCallback} className='text-lg font-psemibold text-secondary'>Hacer Venta</Link>
+              {/* <Link href={`/create-sale`} className='text-lg font-psemibold text-secondary'>Hacer Venta</Link> */}
+              <CustomButton title="Cerrar" handlePress={closeCallback}/>
+            </View>
           </View>
         </View>
       </Modal>
     );
   }
 }
+
+const styles = StyleSheet.create({
+    container: { flex: 1, padding: 10, justifyContent: 'center'},
+    head: { height: 44},
+    headText: { fontSize: 15, fontWeight: 'bold' , textAlign: 'center', verticalAlign:'top'},
+    text: { margin: 6, fontSize: 13 , textAlign: 'center', verticalAlign:'top' },
+})
 
 export default OrderCardView;

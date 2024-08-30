@@ -10,6 +10,7 @@ import { icons } from '../../constants';
 const CreateSale = () => {
   const [sale, setSale] = useState(undefined);
   const [itemImages, setItemImages] = useState([]);
+  const [allItems, setAllItems] = useState([]);
   const { data } = useLocalSearchParams();
 
   useEffect(() => {
@@ -30,15 +31,16 @@ const CreateSale = () => {
   useEffect(() => {
     if(!sale) {return;}
     
-    fetchProductImages(sale.order)
+    fetchAllItems()
   }, [sale]);
 
-  fetchProductImages = async (allProducts) => {
-   try {
-      const response = await axios.put(`http://192.168.100.4:3000/inventory/getItemsByCode`, allProducts.map(x => x.code));
-      setItemImages(response.data)
-    } catch (error) {console.log('Error:', error.message);} 
-  }
+  fetchAllItems = async () => {
+    try {
+       const response = await axios.get(`http://192.168.100.4:3000/inventory/allItemsMobile`);
+       setAllItems(response.data)
+       setItemImages(response.data.map(x => ({code: x.code, imageLink: x.imageLink})))
+     } catch (error) {console.log('Error:', error.message);} 
+   }
 
   const createSale = async () => {
     try {
@@ -53,7 +55,10 @@ const CreateSale = () => {
   const addItem = () => {
     let newSale = {...sale}
 
-    newSale.order.push({...sale.order[0]})
+    //Adds item that isn't already in list
+    let itemToAdd = allItems.find(x => sale.order.find(y => y.code == x.code) == undefined)
+
+    newSale.order.push({...itemToAdd})
 
     setSale(newSale)
   }

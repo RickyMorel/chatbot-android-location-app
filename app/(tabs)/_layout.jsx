@@ -26,9 +26,6 @@ const TabsLayout = () => {
         <Tabs.Screen name="stock" options={{title: 'Stock', headerShown: false, tabBarIcon: ({color, focused}) => (
             <TabIcon icon={icons.plus} color={color} name="Stock" focused={focused}/>
         )}}/>
-        <Tabs.Screen name="inventory" options={{title: 'Inventario', headerShown: false, tabBarIcon: ({color, focused}) => (
-            <TabIcon icon={icons.profile} color={color} name="Inventario" focused={focused}/>
-        )}}/>
       </Tabs>
   )
 }

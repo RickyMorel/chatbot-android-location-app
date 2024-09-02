@@ -6,13 +6,10 @@ import CustomButton from './CustomButton';
 import axios from 'axios';
 
 export class SalesEntry extends Component {
-  deleteSale = async () => {
+  deleteSale = () => {
     const {sale} = this.props
-    console.log("sale", sale)
     try {
-      const response = await axios.post('http://192.168.100.4:3000/sales/delete', {clientPhoneNumber: sale.clientPhoneNumber, creationDate: sale.creationDate});
-      console.log('Sale created successfully:', response.data);
-      router.back()
+      this.props.deleteCallback(sale)
     } catch (error) {
       console.log('Error:', error.message);
     }

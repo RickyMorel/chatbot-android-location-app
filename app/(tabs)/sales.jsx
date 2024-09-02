@@ -1,13 +1,16 @@
 import { Text, View, FlatList } from 'react-native';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
 import SalesEntry from '../../components/SalesEntry';
 import { useFocusEffect } from '@react-navigation/native';
+import GenericPopup from '../popups/GenericPopup';
 
 const Sales = () => {
   const [allSales, setAllSales] = useState([]);
+  const [saleToDelete, setSaleToDelete] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const popupRef = useRef(false);
 
   const fetchSales = async () => {
     console.log("fetchSales")
@@ -22,6 +25,23 @@ const Sales = () => {
     }
   };
 
+  const openDeletePopup = (sale) => {
+    popupRef.current.setModalVisible(true)
+
+    setSaleToDelete(sale)
+  }
+
+  const handleDelete = async (sale) => {
+    console.log("handleDelete")
+    const response = await axios.post('http://192.168.100.4:3000/sales/delete', {clientPhoneNumber: sale.clientPhoneNumber, creationDate: sale.creationDate});
+
+    let newSales = [...allSales]
+    
+    newSales = newSales.filter(x => x.clientPhoneNumber != sale.clientPhoneNumber)
+
+    setAllSales(newSales)
+  }
+
   useFocusEffect(
     useCallback(() => {
       fetchSales(); // Fetch data when the tab is focused
@@ -30,11 +50,12 @@ const Sales = () => {
 
   return (
     <SafeAreaView>
+      <GenericPopup title="Estas seguro que quieres eliminar esta venta?" ref={popupRef} confirmCallback={() => handleDelete(saleToDelete)}/>
       <View className="flex-row items-center justify-center"></View>
       <FlatList
         data={allSales}
         keyExtractor={(sale) => sale.clientPhoneNumber}
-        renderItem={({ item }) => <SalesEntry sale={item} />}
+        renderItem={({ item }) => <SalesEntry sale={item} deleteCallback={openDeletePopup}/>}
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
       />
     </SafeAreaView>

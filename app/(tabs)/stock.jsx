@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import StockEntry from '../../components/StockEntry'
 import axios from 'axios';
+import Utils from '../Utils'
 
 const Card = ({title, value}) => {
   return(
@@ -92,7 +93,7 @@ export class Stock extends Component {
       <SafeAreaView>
         <View className="flex-row items-center justify-center">
           <Card title="Clientes" value={this.state?.clientAmount}/>
-          <Card title="Promedio" value={`${Intl.NumberFormat('de-DE').format(this.state?.totalMoney)}gs`}/>
+          <Card title="Promedio" value={Utils.formatCurrency(this.state?.totalMoney)}/>
         </View>
         <FlatList
           data={this.state?.allProducts}

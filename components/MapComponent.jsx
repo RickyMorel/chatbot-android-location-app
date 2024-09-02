@@ -27,8 +27,8 @@ class MapComponent extends Component {
   componentDidUpdate(prevProps) {
     if(prevProps == this.props) {return;}
 
-    // this.fetchRoute()
-    // this.fitToMarkers()
+    this.fetchRoute()
+    this.fitToMarkers()
   }
 
   fitToMarkers = () => {
@@ -142,14 +142,14 @@ render() {
   const { routeCoordinates } = this.state;
   const { orderLocations, storeLocation } = this.props;
 
-  // const allMarkers = orderLocations.map((x) => (
-  //   <Marker
-  //     key={x.locationDto.phoneNumber}
-  //     coordinate={{ latitude: x.locationDto?.location?.lat, longitude: x.locationDto?.location?.lng }}
-  //     title={x.name}
-  //     description={`${Intl.NumberFormat('de-DE').format(x.totalSold)}gs`}
-  //   />
-  // ));
+  const allMarkers = orderLocations.map((x) => (
+    <Marker
+      key={x.locationDto.phoneNumber}
+      coordinate={{ latitude: x.locationDto?.location?.lat, longitude: x.locationDto?.location?.lng }}
+      title={x.name}
+      description={`${Intl.NumberFormat('de-DE').format(x.totalSold)}gs`}
+    />
+  ));
 
   return (
       <View style={styles.container} className="items-center justify-center">
@@ -159,7 +159,7 @@ render() {
           initialRegion={this.state?.userLocation}
           showsUserLocation={true}
         >
-          {/* {allMarkers}
+          {allMarkers}
 
           <Marker
             key={"Store"}
@@ -173,7 +173,7 @@ render() {
                 style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
               />
             </View>
-          </Marker> */}
+          </Marker>
 
           {routeCoordinates && (
             <Polyline

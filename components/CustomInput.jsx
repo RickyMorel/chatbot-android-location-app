@@ -3,16 +3,25 @@ import React, { Component } from 'react'
 import { icons } from '../constants'
 
 export class CustomInput extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      value: props.value
+    }
+  }
+
   render() {
-    const {value, placeholder, handleChangeText, otherStyles} = this.props
+    const {placeholder, handleChangeText, otherStyles, keyboardType} = this.props
 
     return (
-        <View className={`${otherStyles} px-4 border-b-2 focus:border-secondary items-center flex-row`}>
+        <View className={`${otherStyles} border-b-2 focus:border-secondary items-center flex-row`}>
             <TextInput 
-                className="flex-1 text-white font-psemibold text-base" 
-                value={value} 
+                className="flex-1 font-psemibold text-base text-center" 
+                value={this.state.value} 
                 placeholder={placeholder}
                 placeholderTextColor="#7b7b8b"
+                keyboardType={keyboardType ?? "default"}
                 onChangeText={handleChangeText}
             />
         </View>

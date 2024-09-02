@@ -1,37 +1,77 @@
-import { Text, View, Image, Picker } from 'react-native'
 import React, { Component } from 'react'
+import { Image, Text, View } from 'react-native'
+import Utils from '../app/Utils'
+import { icons } from '../constants'
 import CustomButton from './CustomButton'
-import {icons} from '../constants'
-import FormField from './FormField'
+import CustomDropdown from './CustomDropdown'
 import CustomInput from './CustomInput'
 
 export class CreateSaleItem extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            item: props.item
+        }
+    }
+
+    handleSelect = (itemCode) => {
+        const prevItemCode = this.state.item.code
+
+        let wantedItem =  this.props.allItems.find(x => x.code == itemCode)
+
+        this.setState({
+            item: wantedItem
+        })
+
+        this.props.updateItemCallback(wantedItem, prevItemCode)
+    }
+
+    handleChangeAmount = (newAmount) => {
+        const prevItemCode = this.state.item.code
+
+        let newItem =  {...this.state.item}
+        newItem.amount = newAmount
+
+        this.setState({
+            item: newItem
+        })
+
+        this.props.updateItemCallback(newItem, prevItemCode)
+    }
+
   render() {
-    const {image, item, removeItemCallback} = this.props
+    const {removeItemCallback, allItems, addItemCallback, isInEditMode} = this.props
+    const {item} = this.state
 
     return (
-        <View className="flex-row bg-white rounded-lg shadow-lg p-2 border border-gray-200 items-center justify-between">
-            <Image
-                source={{ uri: image }}
-                className="h-[50px] w-[50px] rounded-lg" // No margin needed for equal spacing
-            />
-                {/* <Text className="text-black font-semibold text-center truncate">{item.name}</Text> */}
-                <Picker
-                    selectedValue={selectedValue}
-                    style={styles.picker}
-                    onValueChange={(itemValue) => setSelectedValue(itemValue)}
-                >
-                    <Picker.Item label="Java" value="java" />
-                    <Picker.Item label="JavaScript" value="js" />
-                    <Picker.Item label="Python" value="python" />
-                </Picker>
-                <Text className="text-gray-600 text-center">{item.amount}</Text>
-                {/* <CustomInput placeholder="Ingresar Cantidad" value={item.amount} otherStyles="h-[25px] w-[10px]"/> */}
-                <Text className="text-gray-600 font-semibold text-center">{`${Intl.NumberFormat('de-DE').format(item.price)} gs`}</Text>
-            <View className="w-[50px] h-[50px]" resizeMethod='contain'>
-                <CustomButton icon={icons.bookmark} handlePress={() => removeItemCallback(item.code)} />
+        item.isAddButton ? (
+            <View className="w-full h-[80px] p-2"><CustomButton icon={icons.eyeHide} handlePress={addItemCallback}/></View>
+        ) :
+        (
+            <View className="flex-row bg-white rounded-lg shadow-lg p-2 border border-gray-200 items-center justify-between">
+                <Image
+                    source={{ uri: allItems?.find(x => x.code == item.code)?.imageLink }}
+                    className="h-[50px] w-[50px] rounded-lg" // No margin needed for equal spacing
+                />
+                {
+                    isInEditMode ? 
+                        <CustomDropdown data={allItems.map(x => ({label: x.name, value: x.code}))} value={item.code} handleSelect={this.handleSelect}/>
+                    :
+                        <Text className="text-black font-semibold text-center truncate">{item.name}</Text>
+                }
+                {
+                    isInEditMode ? 
+                        <CustomInput placeholder="Cantidad" keyboardType="numeric" value={item.amount} otherStyles="h-[25px] w-[25px]" handleChangeText={this.handleChangeAmount}/>
+                    :
+                        <Text className="text-gray-600 text-center">{item.amount}</Text>
+                }
+                <Text className="text-gray-600 font-semibold text-center">{Utils.formatCurrency(item.price)}</Text>
+                <View className="w-[50px] h-[50px]" resizeMethod='contain'>
+                    <CustomButton icon={icons.bookmark} handlePress={() => removeItemCallback(item.code)} />
+                </View>
             </View>
-        </View>
+        )
     )
   }
 }

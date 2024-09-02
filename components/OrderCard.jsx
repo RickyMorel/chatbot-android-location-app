@@ -2,6 +2,7 @@ import { Text, View, Image, TouchableOpacity } from 'react-native'
 import React, { Component } from 'react'
 import CustomButton from './CustomButton'
 import * as Animatable from 'react-native-animatable'
+import Utils from '../app/Utils'
 
 export class OrderCard extends Component {
   render() {
@@ -18,7 +19,7 @@ export class OrderCard extends Component {
                 <View className='bg-red-600 w-2' />      
                 <View className='flex-1 pl-4 mt-3'>
                     <Text className='text-black font-bold'>{item.name}</Text>
-                    <Text className='text-gray-600'>{amount} productos. Valor: {Intl.NumberFormat('de-DE').format(item.totalSold)}gs</Text>
+                    <Text className='text-gray-600'>{amount} productos. Valor: {Utils.formatCurrency(item.totalSold)}</Text>
                 </View>
                 <View className="w-[50px] h-[30px] mt-6 mr-2">
                     <CustomButton title="Ver" handlePress={() => {viewOrderCallback(item)}}/>

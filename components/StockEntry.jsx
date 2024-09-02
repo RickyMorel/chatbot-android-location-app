@@ -1,6 +1,7 @@
 import { Text, View, Image } from 'react-native'
 import React, { Component } from 'react'
 import { icons } from '../constants'
+import Utils from '../app/Utils'
 
 export class StockEntry extends Component {
   render() {
@@ -21,7 +22,7 @@ export class StockEntry extends Component {
             <Text className="ml-1 text-gray-600">{item.amount}</Text>
           </View>
         </View>
-        <Text className="text-gray-600 font-semibold ml-2">{`${Intl.NumberFormat('de-DE').format(item.price)}gs`}</Text>
+        <Text className="text-gray-600 font-semibold ml-2">{Utils.formatCurrency(item.price)}</Text>
       </View>
     )
   }

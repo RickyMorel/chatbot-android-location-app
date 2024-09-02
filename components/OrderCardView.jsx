@@ -3,6 +3,7 @@ import { Modal, Text, Pressable, View, StyleSheet } from 'react-native';
 import { Table, Row, Rows } from 'react-native-table-component';
 import { Link } from 'expo-router';
 import CustomButton from './CustomButton';
+import Utils from '../app/Utils'
 
 class OrderCardView extends Component {
   render() {
@@ -11,7 +12,7 @@ class OrderCardView extends Component {
     const tableData = {
         tableHead: ['Nombre Item', 'Cantidad', 'Precio'],
         tableData: currentOrder?.order?.map(x => {
-            return ([x.name, x.amount, `${Intl.NumberFormat('de-DE').format(x.price)}gs`])
+            return ([x.name, x.amount, Utils.formatCurrency(x.price)])
         }),
     };
 
@@ -28,7 +29,7 @@ class OrderCardView extends Component {
           <View className="bg-white rounded-lg p-6">
             <View className="flex-row items-center">
               <Text className="flex-1 text-lg">{currentOrder?.name}</Text>
-              <Text className="text-right">Total: {Intl.NumberFormat('de-DE').format(currentOrder?.totalSold)}gs</Text>
+              <Text className="text-right">Total: {Utils.formatCurrency(currentOrder?.totalSold)}</Text>
             </View>
             <Table className="w-[300px]">
                 <Row data={tableData.tableHead} style={styles.head} textStyle={styles.headText} />

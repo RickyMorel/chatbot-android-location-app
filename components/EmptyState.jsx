@@ -9,11 +9,11 @@ export class EmptyState extends Component {
     const {title, subtitle} = this.props
 
     return (
-      <View className="justify-center items-center px-4">
+      <View className="justify-center items-center px-4 h-full w-full">
         <Image source={images.empty} className="w-[270px] h-[250px]" resizeMode='contain'/>
-        <Text className="text-xl text-center font-psemibold text-white mt-2">{title}</Text>
-        <Text className="font-pmedium text-sm text-gray-100">{subtitle}</Text>
-        <CustomButton title="Create video" handlePress={() => router.push('/create')} containerStyles="w-full my-5"/>
+        <Text className="text-xl text-center font-psemibold mt-2 mb-2">{title}</Text>
+        <Text className="font-pmedium text-sm text-gray-900 text-center mb-4">{subtitle}</Text>
+        <CustomButton title="Volver" handlePress={() => router.push('/map')} containerStyles="w-full h-[60px]"/>
       </View>
     )
   }

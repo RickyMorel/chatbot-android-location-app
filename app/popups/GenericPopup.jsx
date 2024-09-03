@@ -30,8 +30,8 @@ class GenericPopup extends Component {
         <View style={styles.modalContainer}>
           <Text style={styles.modalText}>{title}</Text>
           <View className="flex-row justify-between items-center">
-            <View className='pr-2 w-[50px]'><CustomButton title="Si" handlePress={() => { confirmCallback(); this.setModalVisible(false); }} /></View>
-            <View className="pl-2 w-[80px]"><CustomButton title="Cerrar" handlePress={() => this.setModalVisible(false)} /></View>
+            <View className='pr-2 w-[50px] h-[40px]'><CustomButton title="Si" handlePress={() => { confirmCallback(); this.setModalVisible(false); }} /></View>
+            <View className="pl-2 w-[80px] h-[40px]"><CustomButton title="Cerrar" handlePress={() => this.setModalVisible(false)} /></View>
           </View>
         </View>
       </View>

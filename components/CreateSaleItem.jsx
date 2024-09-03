@@ -44,9 +44,16 @@ export class CreateSaleItem extends Component {
     const {removeItemCallback, allItems, addItemCallback, isInEditMode} = this.props
     const {item} = this.state
 
+    let maxCharacterLength = 18
+    let itemName = item.name
+
+    if(itemName?.length > maxCharacterLength) {
+        itemName = itemName.slice(0, 18) + "..."
+    }
+
     return (
         item.isAddButton ? (
-            <View className="w-full h-[80px] p-2"><CustomButton icon={icons.eyeHide} handlePress={addItemCallback}/></View>
+            <View className="w-full h-[70px] p-2"><CustomButton icon="add" handlePress={addItemCallback} iconSize={36}/></View>
         ) :
         (
             <View className="flex-row bg-white rounded-lg shadow-lg p-2 border border-gray-200 items-center justify-between">
@@ -58,7 +65,7 @@ export class CreateSaleItem extends Component {
                     isInEditMode ? 
                         <CustomDropdown data={allItems.map(x => ({label: x.name, value: x.code}))} value={item.code} handleSelect={this.handleSelect}/>
                     :
-                        <Text className="text-black font-semibold text-center truncate">{item.name}</Text>
+                        <Text className="text-left text-black font-semibold truncate">{itemName}</Text>
                 }
                 {
                     isInEditMode ? 
@@ -67,8 +74,8 @@ export class CreateSaleItem extends Component {
                         <Text className="text-gray-600 text-center">{item.amount}</Text>
                 }
                 <Text className="text-gray-600 font-semibold text-center">{Utils.formatCurrency(item.price)}</Text>
-                <View className="w-[50px] h-[50px]" resizeMethod='contain'>
-                    <CustomButton icon={icons.bookmark} handlePress={() => removeItemCallback(item.code)} />
+                <View className="w-[40px] h-[40px]" resizeMethod='contain'>
+                    <CustomButton icon="delete" handlePress={() => removeItemCallback(item.code)} />
                 </View>
             </View>
         )

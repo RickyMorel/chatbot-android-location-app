@@ -6,6 +6,7 @@ import CustomButton from '../../components/CustomButton';
 import axios from 'axios';
 import CreateSaleItem from '../../components/CreateSaleItem';
 import { icons } from '../../constants';
+import Utils from '../Utils';
 
 const CreateSale = () => {
   const [sale, setSale] = useState(undefined);
@@ -101,7 +102,7 @@ const CreateSale = () => {
   return (
     <SafeAreaView>
     <View className="h-full w-full">
-      <Text className='text-center'>Hacer Venta</Text>
+      <Text className='text-center font-bold'>Hacer Venta</Text>
       <FlatList
         style={styles.flatList}
         data={flatListData}
@@ -116,12 +117,12 @@ const CreateSale = () => {
       <View className="w-full h-[150px] bottom-0 right-0 left-0 bg-primary p-2">
         <View className='flex-row justify-between pb-4'>
           <View>
-            <Text className='text-center font-bold pb-2'>{sale?.clientName}</Text>
-            <Text className='text-center'>Total: {sale?.order?.reduce((acc, item) => acc + (+item.price * +item.amount), 0)}gs</Text>
+            <Text className='text-center font-bold pb-2 pl-3'>{sale?.clientName}</Text>
+            <Text className='text-center'>Total: {Utils.formatCurrency(sale?.order?.reduce((acc, item) => acc + (+item.price * +item.amount), 0))}</Text>
           </View>
-          <View className="w-[60px] h-[60px]"><CustomButton icon={isInEditMode ? icons.bookmark : icons.eyeHide} handlePress={enterEditMode}/></View>
+          <View className="w-[40px] h-[40px]"><CustomButton icon={isInEditMode ? "visibility" : "edit"} handlePress={enterEditMode}/></View>
         </View>
-        <View><CustomButton title="Confirmar Venta" handlePress={createSale}/></View>
+        <View className='h-[60px]'><CustomButton title="Confirmar Venta" handlePress={createSale}/></View>
       </View>
     </View>
     </SafeAreaView>

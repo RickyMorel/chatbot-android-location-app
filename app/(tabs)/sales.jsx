@@ -5,6 +5,7 @@ import axios from 'axios';
 import SalesEntry from '../../components/SalesEntry';
 import { useFocusEffect } from '@react-navigation/native';
 import GenericPopup from '../popups/GenericPopup';
+import {EmptyState} from '../../components/EmptyState'
 
 const Sales = () => {
   const [allSales, setAllSales] = useState([]);
@@ -49,7 +50,7 @@ const Sales = () => {
   );
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <GenericPopup title="Estas seguro que quieres eliminar esta venta?" ref={popupRef} confirmCallback={() => handleDelete(saleToDelete)}/>
       <View className="flex-row items-center justify-center"></View>
       <FlatList
@@ -57,6 +58,8 @@ const Sales = () => {
         keyExtractor={(sale) => sale.clientPhoneNumber}
         renderItem={({ item }) => <SalesEntry sale={item} deleteCallback={openDeletePopup}/>}
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
+        ListEmptyComponent={() => <EmptyState title="Hoy no se realizaron ventas" subtitle="Cuando realices una venta, aparecerá en esta pestaña"/>}
+        contentContainerStyle={{ flexGrow: 1 }}
       />
     </SafeAreaView>
   );

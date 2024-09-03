@@ -185,7 +185,7 @@ render() {
         </MapView>
       
 
-        <View className="w-[150px] h-[100px] mt-6 mr-2 absolute bottom-[50px] right-0">
+        <View className="w-[150px] h-[40px] mt-6 mr-2 absolute bottom-[120px] right-0">
           <CustomButton title="Empezar Ruta" handlePress={this.openGoogleMaps}/>
         </View>
         {/* <SafeAreaView>

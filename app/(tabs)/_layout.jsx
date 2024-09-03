@@ -1,12 +1,12 @@
-import { View, Text, Image } from 'react-native'
-import { Tabs, Redirect } from 'expo-router'
-
-import { icons } from '../../constants'
+import { MaterialIcons } from '@expo/vector-icons';
+import { Tabs } from 'expo-router';
+import { Text, View } from 'react-native';
 
 const TabIcon = ({icon, color, name ,focused}) => {
     return (
         <View className="items-center justify-center gap-2">
-            <Image source={icon} resizeMode="contain" tintColor={color} className="w-6 h-6"/>
+            {/* <Image source={icon} resizeMode="contain" tintColor={color} className="w-6 h-6"/> */}
+            <MaterialIcons name={icon} size={24} color={color} className="w-6 h-6"/> 
             <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{color: color}}>
                 {name}
             </Text>
@@ -18,13 +18,13 @@ const TabsLayout = () => {
   return (
       <Tabs screenOptions={tabStyle}>
         <Tabs.Screen name="map" options={{title: 'Mapa', headerShown: false, tabBarIcon: ({color, focused}) => (
-            <TabIcon icon={icons.home} color={color} name="Mapa" focused={focused}/>
+            <TabIcon icon="map" color={color} name="Mapa" focused={focused}/>
         )}}/>
         <Tabs.Screen name="sales" options={{title: 'Ventas', headerShown: false, tabBarIcon: ({color, focused}) => (
-            <TabIcon icon={icons.bookmark} color={color} name="Ventas" focused={focused}/>
+            <TabIcon icon="payment" color={color} name="Ventas" focused={focused}/>
         )}}/>
         <Tabs.Screen name="stock" options={{title: 'Stock', headerShown: false, tabBarIcon: ({color, focused}) => (
-            <TabIcon icon={icons.plus} color={color} name="Stock" focused={focused}/>
+            <TabIcon icon="local-shipping" color={color} name="Stock" focused={focused}/>
         )}}/>
       </Tabs>
   )

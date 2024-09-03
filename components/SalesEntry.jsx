@@ -30,7 +30,7 @@ export class SalesEntry extends Component {
                 </View>
             </View>
             <Text className="text-gray-600 font-semibold ml-2">{Utils.formatCurrency(sale?.totalSold)}</Text>
-            <View className='h-[40px] w-[40px]'  resizeMode='contain'><CustomButton icon={icons.play} handlePress={this.deleteSale}/></View>
+            <View className='h-[40px] w-[40px] mt-4 ml-2' resizeMode='contain'><CustomButton icon='delete' handlePress={this.deleteSale}/></View>
       </View>
     )
   }

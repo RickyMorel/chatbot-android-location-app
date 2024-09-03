@@ -1,17 +1,20 @@
 import axios from 'axios';
 import * as Location from 'expo-location';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Alert, View } from 'react-native';
 import CardsView from '../../components/CardsView';
 import MapComponent from '../../components/MapComponent';
 import { useFocusEffect } from '@react-navigation/native';
+import CustomButton from '../../components/CustomButton';
 
 const Map = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [viewTodaysClientLocations, setViewTodaysClientLocations] = useState(false);
   const [orders, setOrders] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [storeLocation, setStoreLocation] = useState(null);
+  const [todaysClientLocations, setTodaysClientLocations] = useState([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -20,6 +23,12 @@ const Map = () => {
       fetchStoreLocation();
     }, [])
   );
+
+  useEffect(() => {
+    if(viewTodaysClientLocations == false) {return;}
+
+    fetchAllTodaysClientsLocations();
+  }, [viewTodaysClientLocations])
 
   const requestLocationPermission = async () => {
     try {
@@ -68,6 +77,19 @@ const Map = () => {
     }
   };
 
+  const fetchAllTodaysClientsLocations = async () => {
+    setIsLoading(true);
+    try {
+      const url = `http://192.168.100.4:3000/client-location/getAllTodaysClientLocations`;
+      const response = await axios.get(url);
+      setTodaysClientLocations(response.data);
+    } catch (error) {
+      console.log('Error:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   const locations = orders?.map(x => ({
     name: x.name,
     totalSold: x.totalSold,
@@ -79,7 +101,7 @@ const Map = () => {
   return (
     <View>
       <View className="w-full h-full">
-        <MapComponent orderLocations={locations ?? []} storeLocation={storeLocation} userLocation={userLocation} />
+        <MapComponent orderLocations={locations ?? []} storeLocation={storeLocation} userLocation={userLocation}/>
       </View>
       <View className="w-full h-[100px] absolute bottom-0 bg-primary">
         <CardsView posts={orders ?? []} />

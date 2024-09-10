@@ -6,8 +6,12 @@ import SalesEntry from '../../components/SalesEntry';
 import { useFocusEffect } from '@react-navigation/native';
 import GenericPopup from '../popups/GenericPopup';
 import {EmptyState} from '../../components/EmptyState'
+import CustomButton from '../../components/CustomButton';
+import { useRouter } from 'expo-router';
 
 const Sales = () => {
+  const router = useRouter();
+
   const [allSales, setAllSales] = useState([]);
   const [saleToDelete, setSaleToDelete] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -61,6 +65,9 @@ const Sales = () => {
         ListEmptyComponent={() => <EmptyState title="Hoy no se realizaron ventas" subtitle="Cuando realices una venta, aparecerá en esta pestaña"/>}
         contentContainerStyle={{ flexGrow: 1 }}
       />
+      <View className="w-[40px] h-[40px] mt-6 mr-2 absolute top-[25px] right-0">
+        <CustomButton icon="add" handlePress={() => { router.push(`/create-sale`); }} />
+      </View>
     </SafeAreaView>
   );
 };

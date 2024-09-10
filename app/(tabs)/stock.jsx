@@ -76,7 +76,7 @@ export class Stock extends Component {
 
    try {
       const response = await axios.put(`http://192.168.100.4:3000/inventory/getItemsByCode`, allProducts.map(x => x.code));
-      console.log("response.data", response.data)
+
       this.setState({
         itemImages: response.data
       })

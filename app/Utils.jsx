@@ -7,7 +7,7 @@ class Utils {
         let itemName = name
     
         if(itemName?.length > maxCharacterLength) {
-            itemName = itemName.slice(0, 18) + "..."
+            itemName = itemName.slice(0, maxCharacterLength) + "..."
         }
 
         return itemName

@@ -28,10 +28,6 @@ const OrderCardView = ({ currentOrder, isOpen, closeCallback }) => {
 
     return (
       <View className="flex-row bg-white rounded-lg shadow-lg p-2 border border-gray-200 items-center justify-between">
-        {/* <Image
-            source={{ uri: allItems?.find(x => x.code == item.code)?.imageLink }}
-            className="h-[50px] w-[50px] rounded-lg" // No margin needed for equal spacing
-        /> */}
         <Text className="text-left text-black font-semibold truncate">{itemName}</Text>
         <Text className="text-gray-600 text-center">{item.amount}</Text>
         <Text className="text-gray-600 font-semibold text-center">{Utils.formatCurrency(item.price)}</Text>

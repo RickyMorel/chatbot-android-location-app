@@ -16,16 +16,16 @@ const CreateSale = () => {
   const { data } = useLocalSearchParams();
 
   useEffect(() => {
-    const dataObj = JSON.parse(data);
+    const dataObj = data ? JSON.parse(data) : undefined;
 
     const saleData = {
-      clientName: dataObj.name,
-      clientPhoneNumber: dataObj.phoneNumber,
-      order: dataObj.order?.map(x => ({name: x.name, code: x.code, price: x.price, amount: x.amount})),
+      clientName: dataObj?.name ?? "",
+      clientPhoneNumber: dataObj?.phoneNumber ?? "",
+      order: dataObj?.order?.map(x => ({name: x.name, code: x.code, price: x.price, amount: x.amount})) ?? [],
       salesPerson: "Juan Pancho",
       movil: "Movil002",
-      totalSold: dataObj.totalSold,
-      creationDate: dataObj.creationDate
+      totalSold: dataObj?.totalSold ?? 0,
+      creationDate: dataObj?.creationDate ?? new Date()
     }
 
     setSale(saleData)

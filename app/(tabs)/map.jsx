@@ -47,7 +47,7 @@ const Map = () => {
     try {
       const url = `http://192.168.100.4:3000/order/confirmed`;
       const response = await axios.get(url);
-      console.log("response.data", response.data);
+
       setOrders(response.data);
     } catch (error) {
       console.log('Error:', error.message);

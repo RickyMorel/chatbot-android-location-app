@@ -10,7 +10,7 @@ import { Dropdown } from 'react-native-element-dropdown';
       if (value || isFocus) {
         return (
           <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-            Elejir Item
+            {props.placeholderText ?? 'Elejir Item'}
           </Text>
         );
       }
@@ -31,7 +31,7 @@ import { Dropdown } from 'react-native-element-dropdown';
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocus ? 'Elejir Item' : '...'}
+          placeholder={!isFocus ? props.placeholderText ?? 'Elejir Item' : '...'}
           searchPlaceholder="Search..."
           value={value}
           onFocus={() => setIsFocus(true)}
@@ -51,12 +51,9 @@ import { Dropdown } from 'react-native-element-dropdown';
   const styles = StyleSheet.create({
     container: {
       backgroundColor: 'white',
-      paddingBottom: 16,
-      paddingTop: 16
     },
     dropdown: {
       height: 50,
-      width: 130,
       borderColor: 'gray',
       borderWidth: 0.5,
       borderRadius: 8,

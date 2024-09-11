@@ -75,8 +75,6 @@ const Map = () => {
     locationDto: x.locationDto,
   }));
 
-  console.log("locations", locations.length)
-
   return (
     <View>
       <View className="w-full h-full">

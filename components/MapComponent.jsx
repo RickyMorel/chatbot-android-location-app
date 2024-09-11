@@ -237,8 +237,6 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
 
       i++
     });
-
-    console.log("newArray", newArray)
   }
 
   useEffect(() => {
@@ -415,7 +413,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
         <CustomButton icon="map-pin" iconType={2} handlePress={() => setViewTodaysClientLocations(!viewTodaysClientLocations)}/>
       </View>
       <View className="w-[40px] h-[40px] mt-6 mr-2 absolute top-[75px] right-0">
-        <CustomButton icon="person" handlePress={() => { router.push(`/create-client`); }}/>
+        <CustomButton icon="adduser" iconType={3} handlePress={() => { router.push(`/create-client`); }}/>
       </View>
     </View>
   );

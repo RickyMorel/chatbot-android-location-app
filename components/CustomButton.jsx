@@ -1,7 +1,6 @@
 import { TouchableOpacity, Text, Image } from 'react-native'
 import React, { Component } from 'react'
-import { MaterialIcons } from '@expo/vector-icons';
-import Feather from '@expo/vector-icons/Feather';
+import IconElement from './IconElement';
 
 export class CustomButton extends Component {
   render() {
@@ -17,10 +16,7 @@ export class CustomButton extends Component {
         {title ? <Text className={`text-primary font-psemibold text-lg ${textStyles}`}>{title}</Text> : <></>}
         {
           icon ? 
-            iconType == 1 ? 
-              <MaterialIcons name={icon} size={iconSize ?? 18} color="black" className='justify-center' /> 
-              :
-              <Feather name={icon} size={iconSize ?? 18} color="black" className='justify-center'/>
+          <IconElement icon={icon} iconSize={iconSize} iconType={iconType}/>
           : 
           <></>
         }

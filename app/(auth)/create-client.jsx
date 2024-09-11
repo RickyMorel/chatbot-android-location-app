@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { router } from 'expo-router';
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
@@ -8,13 +8,33 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import FormField from '../../components/FormField';
 import MapView, { Marker } from 'react-native-maps';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { firebase, storage } from '../firebaseConfig';
+import CustomDropdown from '../../components/CustomDropdown';
 
 const CreateClient = () => {
     const [image, setImage] = useState(null);
     const [phoneNumber, setPhoneNumber] = useState("");
     const [clientName, setClientName] = useState("");
+    const [address, setAddress] = useState("");
     const [location, setLocation] = useState(null);
+    const [clientLocations, setClientLocations] = useState([]);
     const mapRef = useRef(null);
+
+    useEffect(() => {
+        fetchAllClientLocations();
+    }, []);
+
+    const fetchAllClientLocations = async () => {
+        try {
+          const response = await axios.get(`http://192.168.100.4:3000/client-crud/getAllClientZones`);
+    
+          setClientLocations([...response.data.filter(x => x.includes(',') == false && x != "NO MENSAJEAR")])
+        } catch (error) {
+          console.log("error", error)
+          return error
+        }
+    };
 
     const requestPermission = async () => {
         if (Platform.OS !== 'web') {
@@ -31,11 +51,40 @@ const CreateClient = () => {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
-            quality: 1,
+            quality: 0.1,
         });
 
         if (!result.canceled) {
             setImage(result.assets[0].uri);
+        }
+    };
+
+    const uploadImageToFirebase = async (imageUri) => {
+        console.log("uploadImageToFirebase", imageUri)
+        // Fetch the image as a blob
+        const response = await fetch(imageUri);
+        let blob = await response.blob();
+
+        console.log("response", response)
+        console.log("blob", blob)
+
+        const storageRef = ref(storage, `chatbot-house-images/${phoneNumber}_${Date.now()}.jpg`);
+
+        console.log("storageRef", storageRef)
+
+        try {
+            const snapshot = await uploadBytes(storageRef, blob)
+
+            console.log("snapshot", snapshot)
+            console.log('Uploaded a blob or file!');
+    
+            const downloadURL = await getDownloadURL(snapshot.ref);
+
+            blob = null;
+    
+            return downloadURL;
+        } catch(err) {
+            console.log("error", err)
         }
     };
 
@@ -51,18 +100,28 @@ const CreateClient = () => {
     const handleChangeData = (value, propertyName) => {
         if (propertyName === "phoneNumber") { setPhoneNumber(value); }
         else if (propertyName === "name") { setClientName(value); }
+        else if (propertyName === "address") { setAddress(value); }
     };
 
     const createClient = async () => {
+        console.log("createClient!!!")
+        const imageUrl = await uploadImageToFirebase(image);
+
+        console.log("imageUrl!!!", imageUrl)
+
         const clientData = {
             name: clientName,
+            address: address,
             phoneNumber: phoneNumber,
+            locationPicture: imageUrl,
+            locationDescription: '',
             location: location,
-            // add other fields as needed
         };
 
+        console.log("clientData", clientData)
+
         try {
-            const response = await axios.post('http://192.168.100.4:3000/clients/createClient', clientData);
+            const response = await axios.post('http://192.168.100.4:3000/client-crud/createWithLocation', clientData);
             console.log('Client created successfully:', response.data);
             router.back();
         } catch (error) {
@@ -95,6 +154,9 @@ const CreateClient = () => {
         });
     };
 
+   // const hasValidNumber = phoneNumber.length == 12 && phoneNumber.startsWith("595")
+    const hasValidNumber = true
+
     return (
       <SafeAreaView>
       <ScrollView>
@@ -115,12 +177,13 @@ const CreateClient = () => {
               >
                   <Marker coordinate={location} />
               </MapView>
-              <FormField title="Nombre de Cliente" placeholder="Nombre de Cliente" handleChangeText={(e) => this.handleChangeData(e, "name")} otherStyles="mt-7" keyboardType="email-address"/>
-              <FormField title="Numero de Celular" placeholder="Numero de celular" keyboardType="numeric" otherStyles="mt-7" handleChangeText={(value) => this.handleChangeData(value, "phoneNumber")}/>
+              <FormField placeholder="Nombre de Cliente" handleChangeText={(e) => handleChangeData(e, "name")} otherStyles="mt-7" keyboardType="text"/>
+              <FormField placeholder="(+595) 981 000 000" keyboardType="numeric" value={phoneNumber} otherStyles="mt-7" handleChangeText={(value) => handleChangeData(value, "phoneNumber")}/>
+              <View className='mt-7 w-full'><CustomDropdown data={clientLocations.map(x => ({label: x, value: x}))} placeholderText="Elejir Barrio" value={address} handleSelect={(e) => handleChangeData(e, "address")}/></View>
               {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
               <View className='h-[60px] mt-7'><CustomButton title="Obtener ubicación actual" handlePress={getCurrentLocation} /></View>
-              <View className='h-[60px] mt-7'><CustomButton title="Sacar foto de casa" handlePress={takePhoto} /></View>
-              <View className='h-[60px] mt-7'><CustomButton title="Crear Cliente" handlePress={createClient}/></View>
+              <View className='h-[60px] mt-7'><CustomButton title="Sacar foto de casa" handlePress={takePhoto} isLoading={!hasValidNumber}/></View>
+              <View className='h-[60px] mt-7'><CustomButton title="Crear Cliente" isLoading={!(hasValidNumber && location != null && address.length > 1 && clientName.length > 1)} handlePress={createClient}/></View>
             </View>
       </View>
       </ScrollView>

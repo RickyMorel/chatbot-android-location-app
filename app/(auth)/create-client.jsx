@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,6 +11,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { firebase, storage } from '../firebaseConfig';
 import CustomDropdown from '../../components/CustomDropdown';
+import IconElement from '../../components/IconElement';
 
 const CreateClient = () => {
     const [image, setImage] = useState(null);
@@ -18,10 +19,17 @@ const CreateClient = () => {
     const [clientName, setClientName] = useState("");
     const [address, setAddress] = useState("");
     const [location, setLocation] = useState(null);
+    const [streetName, setStreetName] = useState('');
     const [clientLocations, setClientLocations] = useState([]);
+    const { data } = useLocalSearchParams();
     const mapRef = useRef(null);
 
     useEffect(() => {
+        const locationObj = data ? JSON.parse(data) : undefined;
+
+        setLocation(locationObj.location)
+        setStreetName(locationObj.streetName)
+
         fetchAllClientLocations();
     }, []);
 
@@ -50,7 +58,7 @@ const CreateClient = () => {
         let result = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [16, 9],
             quality: 0.1,
         });
 
@@ -60,23 +68,14 @@ const CreateClient = () => {
     };
 
     const uploadImageToFirebase = async (imageUri) => {
-        console.log("uploadImageToFirebase", imageUri)
         // Fetch the image as a blob
         const response = await fetch(imageUri);
         let blob = await response.blob();
 
-        console.log("response", response)
-        console.log("blob", blob)
-
         const storageRef = ref(storage, `chatbot-house-images/${phoneNumber}_${Date.now()}.jpg`);
-
-        console.log("storageRef", storageRef)
 
         try {
             const snapshot = await uploadBytes(storageRef, blob)
-
-            console.log("snapshot", snapshot)
-            console.log('Uploaded a blob or file!');
     
             const downloadURL = await getDownloadURL(snapshot.ref);
 
@@ -88,15 +87,6 @@ const CreateClient = () => {
         }
     };
 
-    const fitToMarkers = (location) => {
-      if (mapRef.current && location) {
-        mapRef.current.fitToCoordinates([location], {
-          edgePadding: { top: 500, right: 500, bottom: 500, left: 500 },
-          animated: true,
-        });
-      }
-    };
-
     const handleChangeData = (value, propertyName) => {
         if (propertyName === "phoneNumber") { setPhoneNumber(value); }
         else if (propertyName === "name") { setClientName(value); }
@@ -104,10 +94,7 @@ const CreateClient = () => {
     };
 
     const createClient = async () => {
-        console.log("createClient!!!")
         const imageUrl = await uploadImageToFirebase(image);
-
-        console.log("imageUrl!!!", imageUrl)
 
         const clientData = {
             name: clientName,
@@ -118,75 +105,33 @@ const CreateClient = () => {
             location: location,
         };
 
-        console.log("clientData", clientData)
-
         try {
             const response = await axios.post('http://192.168.100.4:3000/client-crud/createWithLocation', clientData);
-            console.log('Client created successfully:', response.data);
+            console.log("response", response)
+            router.back();
             router.back();
         } catch (error) {
             console.log('Error:', error.message);
         }
     };
 
-    const getCurrentLocation = useCallback(async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-            alert('Permission to access location was denied');
-            return;
-        }
-
-        let location = await Location.getCurrentPositionAsync({});
-        const locationObj = {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        }
-
-        setLocation(locationObj);
-        fitToMarkers(locationObj)
-    }, []);
-
-    const handleMapPress = (event) => {
-        const { coordinate } = event.nativeEvent;
-        setLocation({
-            latitude: coordinate.latitude,
-            longitude: coordinate.longitude,
-        });
-    };
-
-   // const hasValidNumber = phoneNumber.length == 12 && phoneNumber.startsWith("595")
-    const hasValidNumber = true
+    const hasValidNumber = phoneNumber.length == 12 && phoneNumber.startsWith("595")
 
     return (
       <SafeAreaView>
-      <ScrollView>
-      <View className="h-full w-full">
-        <Text className='text-center font-bold'>Crear Cliente</Text>
-            <View className="w-full justify-center min-h-[83vh] px-4">
-              <MapView
-                  ref={mapRef}
-                  style={styles.map}
-                  initialRegion={{
-                      latitude: location?.latitude,
-                      longitude: location?.longitude,
-                      // latitudeDelta: 0.0922,
-                      // longitudeDelta: 0.0421,
-                  }}
-                  zoom={13}
-                  onPress={handleMapPress} // Add this line
-              >
-                  <Marker coordinate={location} />
-              </MapView>
-              <FormField placeholder="Nombre de Cliente" handleChangeText={(e) => handleChangeData(e, "name")} otherStyles="mt-7" keyboardType="text"/>
-              <FormField placeholder="(+595) 981 000 000" keyboardType="numeric" value={phoneNumber} otherStyles="mt-7" handleChangeText={(value) => handleChangeData(value, "phoneNumber")}/>
-              <View className='mt-7 w-full'><CustomDropdown data={clientLocations.map(x => ({label: x, value: x}))} placeholderText="Elejir Barrio" value={address} handleSelect={(e) => handleChangeData(e, "address")}/></View>
-              {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-              <View className='h-[60px] mt-7'><CustomButton title="Obtener ubicación actual" handlePress={getCurrentLocation} /></View>
-              <View className='h-[60px] mt-7'><CustomButton title="Sacar foto de casa" handlePress={takePhoto} isLoading={!hasValidNumber}/></View>
-              <View className='h-[60px] mt-7'><CustomButton title="Crear Cliente" isLoading={!(hasValidNumber && location != null && address.length > 1 && clientName.length > 1)} handlePress={createClient}/></View>
+        <ScrollView className="h-full w-full p-5">
+            <Text className='text-center font-bold mb-3'>Crear Cliente</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
+                <Text className='text-center font-bold mr-2'>{`${streetName}`}</Text>
+                <IconElement icon={'map-marker-alt'} iconType={4} color='red' iconSize={20}/>
             </View>
-      </View>
-      </ScrollView>
+            <FormField title="Nombre de Cliente" placeholder="Juana Maria" handleChangeText={(e) => handleChangeData(e, "name")} otherStyles="mt-7" keyboardType="text"/>
+            <FormField title="Numero de Cliente" placeholder="(+595) 981 000 000" keyboardType="numeric" value={phoneNumber} otherStyles="mt-7" handleChangeText={(value) => handleChangeData(value, "phoneNumber")}/>
+            <View className='mt-7 w-full pb-5'><CustomDropdown data={clientLocations.map(x => ({label: x, value: x}))} placeholderText="Elejir Barrio" value={address} handleSelect={(e) => handleChangeData(e, "address")}/></View>
+            {image && <Image source={{ uri: image }} style={{ width: 200, height: 200, alignSelf: 'center' }} />}
+            <View className='h-[60px] mt-7'><CustomButton title="Sacar foto de casa" handlePress={takePhoto} isLoading={!hasValidNumber}/></View>
+            <View className='h-[60px] mt-7'><CustomButton title="Crear Cliente" isLoading={!(hasValidNumber && location != null && address.length > 1 && clientName.length > 1 && image)} handlePress={createClient}/></View>
+        </ScrollView>
       </SafeAreaView>
     );
 };

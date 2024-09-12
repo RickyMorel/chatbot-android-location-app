@@ -8,7 +8,7 @@ export class CustomButton extends Component {
 
     return (
       <TouchableOpacity 
-        className={`w-full h-full bg-secondary rounded-xl justify-center items-center ${containerStyles} ${isLoading ? 'opacity-50' : ''}`} 
+        className={`w-full h-full p-3 bg-secondary rounded-xl justify-center items-center ${containerStyles} ${isLoading ? 'opacity-50' : ''}`} 
         onPress={handlePress}
         activeOpacity={0.7}
         disabled={isLoading}

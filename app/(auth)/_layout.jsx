@@ -11,6 +11,7 @@ const AuthLayout = () => {
           <Stack.Screen name="sign-up" options={{headerShown: false}}/>
           <Stack.Screen name="create-sale" options={{headerShown: false}}/>
           <Stack.Screen name="create-client" options={{headerShown: false}}/>
+          <Stack.Screen name="create-client-location-screen" options={{headerShown: false}}/>
       </Stack>
 
       <StatusBar backgroundColor='#161622' style='light'/>

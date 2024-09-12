@@ -6,20 +6,8 @@ import { Dropdown } from 'react-native-element-dropdown';
     const [value, setValue] = useState(props.value);
     const [isFocus, setIsFocus] = useState(false);
 
-    const renderLabel = () => {
-      if (value || isFocus) {
-        return (
-          <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-            {props.placeholderText ?? 'Elejir Item'}
-          </Text>
-        );
-      }
-      return null;
-    };
-
     return (
       <View style={styles.container}>
-        {renderLabel()}
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
           placeholderStyle={styles.placeholderStyle}

@@ -39,7 +39,7 @@ const CreateSale = () => {
 
   fetchAllItems = async () => {
     try {
-       const response = await axios.get(`http://192.168.100.4:3000/inventory/allItemsMobile`);
+       const response = await axios.get(`http://192.168.0.17:3000/inventory/allItemsMobile`);
        setAllItems(response.data)
        setItemImages(response.data.map(x => ({code: x.code, imageLink: x.imageLink})))
      } catch (error) {console.log('Error:', error.message);} 
@@ -48,7 +48,7 @@ const CreateSale = () => {
   const createSale = async () => {
     console.log("createSale", sale)
     try {
-      const response = await axios.post('http://192.168.100.4:3000/sales/createSale', sale);
+      const response = await axios.post('http://192.168.0.17:3000/sales/createSale', sale);
       console.log('Sale created successfully:', response.data);
       router.back()
     } catch (error) {

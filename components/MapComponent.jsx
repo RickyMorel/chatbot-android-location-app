@@ -247,7 +247,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
 
   const fetchAllTodaysClientsLocations = async () => {
     try {
-      const url = `http://192.168.100.4:3000/client-location/getAllTodaysClientLocations`;
+      const url = `http://192.168.0.17:3000/client-location/getAllTodaysClientLocations`;
       const response = await axios.get(url);
       console.log("ROUTES", response.data.map(location => [location.location.lng, location.location.lat]))
       setTodaysClientLocations(response.data);

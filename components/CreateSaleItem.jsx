@@ -63,7 +63,7 @@ export class CreateSaleItem extends Component {
                 />
                 {
                     isInEditMode ? 
-                        <CustomDropdown data={allItems.map(x => ({label: x.name, value: x.code}))} value={item.code} handleSelect={this.handleSelect}/>
+                        <View className='w-[130px]'><CustomDropdown data={allItems.map(x => ({label: x.name, value: x.code}))} value={item.code} handleSelect={this.handleSelect}/></View>
                     :
                         <Text className="text-left text-black font-semibold truncate">{itemName}</Text>
                 }

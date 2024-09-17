@@ -24,8 +24,6 @@ const OrderCardView = ({ currentOrder, isOpen, closeCallback }) => {
     const item = newItem.item
     const itemName = Utils.getCutName(item.name, 12)
 
-    console.log("itemmmm", item)
-
     return (
       <View className="flex-row bg-white rounded-lg shadow-lg p-2 border border-gray-200 items-center justify-between">
         <Text className="text-left text-black font-semibold truncate">{itemName}</Text>

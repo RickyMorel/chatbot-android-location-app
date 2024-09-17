@@ -71,7 +71,7 @@ const CreateClientLocationScreen = () => {
         setMarkedMap(true)
     };
 
-    const serializedData = encodeURIComponent(JSON.stringify({location: location, streetName: streetName}));
+    const serializedData = encodeURIComponent(JSON.stringify({location: {lat: location?.latitude, lng: location?.longitude}, streetName: streetName}));
 
     return (
         <>
@@ -100,6 +100,12 @@ const CreateClientLocationScreen = () => {
                 {
                     !gotActualLocation ?
                     <View className='h-[60px] mt-7 absolute bottom-5'><CustomButton title="Obtener ubicación actual" handlePress={getCurrentLocation} /></View>
+                    :
+                    <></>
+                }
+                                {
+                    !markedMap && gotActualLocation ?
+                    <View className='h-[60px] w-[300px] absolute bottom-8 rounded-xl bg-white border-black-100 justify-center'><Text className='text-center'>Marque la casa del cliente usando el mapa</Text></View>
                     :
                     <></>
                 }

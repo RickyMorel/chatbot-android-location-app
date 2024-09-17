@@ -25,8 +25,8 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
   useEffect(() => {
     if (userLocation && orderLocations) {
       fitToMarkers();
-      lol()
-      //fetchRoute()
+      //lol()
+      fetchRoute()
     }
   }, [userLocation, orderLocations]);
 
@@ -295,11 +295,17 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
   };
 
   const fetchRoute = async () => {
-    if (userLocation && orderLocations.length > 0) {
+    console.log("fetchRoute")
+
+    if (userLocation && orderLocations.length > 0) { 
       const waypoints = `optimize:true|${orderLocations.map(location => `${location.locationDto.location.lat},${location.locationDto.location.lng}`).join('|')}`;
       const destination = storeLocation;
 
+      console.log("userLocation", userLocation)
+      console.log("storeLocation", storeLocation)
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${userLocation.latitude},${userLocation.longitude}&destination=${destination.location.lat},${destination.location.lng}&waypoints=${waypoints}&key=${GOOGLE_MAPS_APIKEY}`;
+
+      console.log("url", url)
 
       try {
         const response = await axios.get(url);
@@ -309,6 +315,8 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
 
           const optimizedOrder = response.data.routes[0].waypoint_order;
           const optimizedWaypoints = optimizedOrder.map(index => orderLocations[index]);
+
+          console.log("optimizedOrder", optimizedOrder)
 
           setRouteCoordinates(decodedPoints);
           setOptimizedWaypoints(optimizedWaypoints);

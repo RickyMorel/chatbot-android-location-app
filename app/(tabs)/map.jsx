@@ -1,11 +1,10 @@
+import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
 import * as Location from 'expo-location';
-import React, { useState, useCallback, useEffect } from 'react';
-import { Alert, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Alert, Text, View } from 'react-native';
 import CardsView from '../../components/CardsView';
 import MapComponent from '../../components/MapComponent';
-import { useFocusEffect } from '@react-navigation/native';
-import CustomButton from '../../components/CustomButton';
 
 const Map = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -82,9 +81,16 @@ const Map = () => {
       <View className="w-full h-full">
         <MapComponent orderLocations={locations ?? []} storeLocation={storeLocation} userLocation={userLocation}/>
       </View>
-      <View className="w-full h-[100px] absolute bottom-0 bg-primary">
-        <CardsView posts={orders ?? []} />
-      </View>
+      {
+        locations?.length > 0 ?
+        <View className="w-full h-[100px] absolute bottom-0 bg-primary">
+          <CardsView posts={orders ?? []} />
+        </View>
+        :
+        <View className='h-[60px] w-full absolute bottom-8 rounded-xl bg-white border-black-100 justify-center ml-4 mr-4'>
+          <Text className='text-center'>No hay pedidos cargados</Text>
+        </View>
+      }
     </View>
   );
 };

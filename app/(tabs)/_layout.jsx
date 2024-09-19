@@ -1,6 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { Text, View } from 'react-native';
+import Colors from '../colors';
 
 const TabIcon = ({icon, color, name ,focused}) => {
     return (
@@ -32,7 +33,7 @@ const TabsLayout = () => {
 
 const tabStyle = {
     tabBarShowLabel: false,
-    tabBarActiveTintColor: '#FFA001',
+    tabBarActiveTintColor: Colors.Secondary,
     tabBarInactiveTintColor: '#CDCDE0',
     tabBarStyle: {
         backgroundColor: '#161622',

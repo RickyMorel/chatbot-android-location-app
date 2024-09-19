@@ -414,9 +414,14 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
         )}
       </MapView>
 
-      <View className="w-[150px] h-[40px] mt-6 mr-2 absolute bottom-[120px] right-0">
-        <CustomButton title="Empezar Ruta" handlePress={openGoogleMaps}/>
-      </View>
+      {
+        orderLocations?.length > 0 ?
+        <View className="w-[150px] h-[40px] mt-6 mr-2 absolute bottom-[120px] right-0">
+          <CustomButton title="Empezar Ruta" handlePress={openGoogleMaps}/>
+        </View>
+        :
+        <></>
+      }
       <View className="w-[40px] h-[40px] mt-6 mr-2 absolute top-[25px] right-0">
         <CustomButton icon="map-pin" iconType={2} handlePress={() => setViewTodaysClientLocations(!viewTodaysClientLocations)}/>
       </View>

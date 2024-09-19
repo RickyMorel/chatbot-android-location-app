@@ -37,7 +37,7 @@ export class Stock extends Component {
     })
 
    try {
-      const response = await axios.get(`http://192.168.0.17:3000/order/confirmed`);
+      const response = await axios.get(`http://192.168.100.4:3000/order/confirmed`);
 
       let totalProducts = []
       let totalMoney = 0
@@ -75,7 +75,7 @@ export class Stock extends Component {
     })
 
    try {
-      const response = await axios.put(`http://192.168.0.17:3000/inventory/getItemsByCode`, allProducts.map(x => x.code));
+      const response = await axios.put(`http://192.168.100.4:3000/inventory/getItemsByCode`, allProducts.map(x => x.code));
 
       this.setState({
         itemImages: response.data

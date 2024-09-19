@@ -35,7 +35,7 @@ const CreateClient = () => {
 
     const fetchAllClientLocations = async () => {
         try {
-          const response = await axios.get(`http://192.168.0.17:3000/client-crud/getAllClientZones`);
+          const response = await axios.get(`http://192.168.100.4:3000/client-crud/getAllClientZones`);
     
           setClientLocations([...response.data.filter(x => x.includes(',') == false && x != "NO MENSAJEAR")])
         } catch (error) {
@@ -106,7 +106,7 @@ const CreateClient = () => {
         };
 
         try {
-            const response = await axios.post('http://192.168.0.17:3000/client-crud/createWithLocation', clientData);
+            const response = await axios.post('http://192.168.100.4:3000/client-crud/createWithLocation', clientData);
             console.log("response", response)
             router.back();
             router.back();

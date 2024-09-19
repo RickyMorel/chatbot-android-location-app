@@ -25,7 +25,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
   useEffect(() => {
     if (userLocation && orderLocations) {
       fitToMarkers();
-      //lol()
+      lol()
       fetchRoute()
     }
   }, [userLocation, orderLocations]);
@@ -247,7 +247,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
 
   const fetchAllTodaysClientsLocations = async () => {
     try {
-      const url = `http://192.168.0.17:3000/client-location/getAllTodaysClientLocations`;
+      const url = `http://192.168.100.4:3000/client-location/getAllTodaysClientLocations`;
       const response = await axios.get(url);
       console.log("ROUTES", response.data.map(location => [location.location.lng, location.location.lat]))
       setTodaysClientLocations(response.data);
@@ -361,14 +361,14 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
     return coordinates;
   };
 
-  const allMarkers = orderLocations.map((x) => (
+  const allMarkers = orderLocations.map((x) => { console.log('x', x); return(
     <Marker
       key={x.locationDto.phoneNumber}
       coordinate={{ latitude: x.locationDto?.location?.lat, longitude: x.locationDto?.location?.lng }}
       title={x.name}
       description={`${Intl.NumberFormat('de-DE').format(x.totalSold)}gs`}
     />
-  ));
+  )});
 
   const allClientLocationMarkers = todaysClientLocations.map((x) => (
     <Marker

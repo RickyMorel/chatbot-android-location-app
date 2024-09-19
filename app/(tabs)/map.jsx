@@ -45,8 +45,10 @@ const Map = () => {
   const fetchOrderData = async () => {
     setIsLoading(true);
     try {
-      const url = `http://192.168.0.17:3000/order/confirmed`;
+      const url = `http://192.168.100.4:3000/order/confirmed?movil=Móvil01`;
       const response = await axios.get(url);
+
+      console.log("fetchOrderData", response.data)
 
       setOrders(response.data);
     } catch (error) {
@@ -59,7 +61,7 @@ const Map = () => {
   const fetchStoreLocation = async () => {
     setIsLoading(true);
     try {
-      const url = `http://192.168.0.17:3000/client-location/getLocationByNumber?phoneNumber=STORE`;
+      const url = `http://192.168.100.4:3000/client-location/getLocationByNumber?phoneNumber=STORE`;
       const response = await axios.get(url);
       setStoreLocation(response.data);
     } catch (error) {

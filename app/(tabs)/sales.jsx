@@ -21,7 +21,7 @@ const Sales = () => {
     console.log("fetchSales")
     setIsLoading(true);
     try {
-      const response = await axios.get('http://192.168.0.17:3000/sales');
+      const response = await axios.get('http://192.168.100.4:3000/sales');
       setAllSales(response.data);
     } catch (error) {
       console.log('Error:', error.message);
@@ -38,7 +38,7 @@ const Sales = () => {
 
   const handleDelete = async (sale) => {
     console.log("handleDelete")
-    const response = await axios.post('http://192.168.0.17:3000/sales/delete', {clientPhoneNumber: sale.clientPhoneNumber, creationDate: sale.creationDate});
+    const response = await axios.post('http://192.168.100.4:3000/sales/delete', {clientPhoneNumber: sale.clientPhoneNumber, creationDate: sale.creationDate});
 
     let newSales = [...allSales]
     

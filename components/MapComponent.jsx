@@ -5,6 +5,8 @@ import MapView, { Marker, Polyline } from 'react-native-maps';
 import { icons } from '../constants';
 import CustomButton from './CustomButton';
 import { useRouter } from 'expo-router';
+import GenericPopup from '../app/popups/GenericPopup';
+import Utils from '../app/Utils';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A';
 
@@ -16,6 +18,9 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
   const [currentUserLocation, setCurrentUserLocation] = useState(userLocation);
   const [viewTodaysClientLocations, setViewTodaysClientLocations] = useState(false);
   const [todaysClientLocations, setTodaysClientLocations] = useState([]);
+  const [personToMessage, setPersonToMessage] = useState('');
+  const [personNameToMessage, setNamePersonToMessage] = useState('');
+  const popupRef = useRef(false);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -249,7 +254,6 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
     try {
       const url = `http://192.168.100.4:3000/client-location/getAllTodaysClientLocations`;
       const response = await axios.get(url);
-      console.log("ROUTES", response.data.map(location => [location.location.lng, location.location.lat]))
       setTodaysClientLocations(response.data);
     } catch (error) {
       console.log('Error:', error.message);
@@ -316,8 +320,6 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
           const optimizedOrder = response.data.routes[0].waypoint_order;
           const optimizedWaypoints = optimizedOrder.map(index => orderLocations[index]);
 
-          console.log("optimizedOrder", optimizedOrder)
-
           setRouteCoordinates(decodedPoints);
           setOptimizedWaypoints(optimizedWaypoints);
         } else {
@@ -361,27 +363,43 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
     return coordinates;
   };
 
-  const allMarkers = orderLocations.map((x) => { console.log('x', x); return(
+  const openWhatsappPopup = (phoneNumber, name = "") => {
+    popupRef.current.setModalVisible(true)
+
+    setPersonToMessage(phoneNumber)
+    setNamePersonToMessage(name)
+  }
+
+  const openWhatsApp = (phoneNumber) => {
+    const url = `whatsapp://send?phone=${phoneNumber}`;
+    Linking.openURL(url).catch(() => {
+      alert('Asegurate que WhatsApp este instalado en tu dispositivo');
+    });
+  };
+
+  const allMarkers = orderLocations.map((x) => (
     <Marker
       key={x.locationDto.phoneNumber}
       coordinate={{ latitude: x.locationDto?.location?.lat, longitude: x.locationDto?.location?.lng }}
       title={x.name}
       description={`${Intl.NumberFormat('de-DE').format(x.totalSold)}gs`}
+      onPress={() => openWhatsappPopup(x.locationDto.phoneNumber, x.name)}
     />
-  )});
+  ));
 
   const allClientLocationMarkers = todaysClientLocations.map((x) => (
     <Marker
       key={x.phoneNumber}
       coordinate={{ latitude: x?.location?.lat, longitude: x?.location?.lng }}
-      title={x.name}
+      title={Utils.formatPhoneNumber(x.phoneNumber)}
       pinColor='blue'
-      description={`${x?.location?.lat}, ${x?.location?.lng}`}
+      onPress={() => openWhatsappPopup(x.phoneNumber)}
     />
   ));
 
   return (
     <View style={styles.container} className="items-center justify-center">
+      <GenericPopup title={`Mensajear a ${personNameToMessage.length > 1 ? personNameToMessage : Utils.formatPhoneNumber(personToMessage)} en whatsapp?`} ref={popupRef} confirmCallback={() => openWhatsApp(personToMessage)}/>
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -389,7 +407,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
         showsUserLocation={true}
       >
         {allMarkers}
-        {allClientLocationMarkers}
+        {viewTodaysClientLocations ? allClientLocationMarkers : <></>}
 
         <Marker
           key={"Store"}

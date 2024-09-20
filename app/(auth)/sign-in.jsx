@@ -44,6 +44,15 @@ class SignIn extends Component {
     return false
   }
 
+  getErrorMessages = () => {
+    let errorMessages = ""
+
+    if(this.state.errors.includes("email")) {errorMessages += "*No existe una cuenta con este correo\n"}
+    if(this.state.errors.includes("password")) { errorMessages += "*Contraseña equivocada\n"}
+
+    return errorMessages.trimEnd("\n")
+  }
+
   signIn = async () => {
     const { email, password } = this.state.form
 
@@ -79,6 +88,7 @@ class SignIn extends Component {
             />
           </View>
           <View className='border-b-4 border-gray-300 mt-4 mb-4'></View>
+          <Text className=" text-sm text-red-600 font-pregular">{this.getErrorMessages()}</Text>
           <FormField hasError={errors.includes("email")} placeholder="Ingrese tu correo..." title="Correo" value={this.state.form.email} handleChangeText={(e) => this.handleFormChange(e, "email")} otherStyles="mt-3" keyboardType="email-address"/>
           <FormField hasError={errors.includes("password")} title="Contraseña" placeholder='Ingrese tu contraseña...' value={this.state.form.password} handleChangeText={(e) => this.handleFormChange(e, "password")} otherStyles="mt-3"/>            
           <View className='h-[40px] w-full mb-8'>

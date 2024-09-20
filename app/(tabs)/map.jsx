@@ -5,6 +5,7 @@ import React, { useCallback, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 import CardsView from '../../components/CardsView';
 import MapComponent from '../../components/MapComponent';
+import globalVars from '../globalVars';
 
 const Map = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -44,8 +45,7 @@ const Map = () => {
   const fetchOrderData = async () => {
     setIsLoading(true);
     try {
-      const url = `http://192.168.100.4:3000/order/confirmed?movil=Móvil01`;
-      const response = await axios.get(url);
+      const response = await axios.get(`http://192.168.100.4:3000/order/confirmed?movil=${globalVars.getUser().movil}`);
 
       console.log("fetchOrderData", response.data)
 
@@ -87,9 +87,10 @@ const Map = () => {
           <CardsView posts={orders ?? []} />
         </View>
         :
-        <View className='h-[60px] w-full absolute bottom-8 rounded-xl bg-white border-black-100 justify-center ml-4 mr-4'>
-          <Text className='text-center'>No hay pedidos cargados</Text>
-        </View>
+        <></>
+        // <View className='h-[60px] w-full absolute bottom-8 rounded-xl bg-white border-black-100 justify-center ml-4 mr-4'>
+        //   <Text className='text-center'>No hay pedidos cargados</Text>
+        // </View>
       }
     </View>
   );

@@ -8,6 +8,7 @@ import GenericPopup from '../popups/GenericPopup';
 import {EmptyState} from '../../components/EmptyState'
 import CustomButton from '../../components/CustomButton';
 import { useRouter } from 'expo-router';
+import globalVars from '../globalVars';
 
 const Sales = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const Sales = () => {
     console.log("fetchSales")
     setIsLoading(true);
     try {
-      const response = await axios.get('http://192.168.100.4:3000/sales');
+      const response = await axios.get(`http://192.168.100.4:3000/sales?movil=${globalVars.getUser().movil}`);
       setAllSales(response.data);
     } catch (error) {
       console.log('Error:', error.message);
@@ -56,7 +57,7 @@ const Sales = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <GenericPopup title="Estas seguro que quieres eliminar esta venta?" ref={popupRef} confirmCallback={() => handleDelete(saleToDelete)}/>
-      <View className="flex-row items-center justify-center"></View>
+      <Text className='text-center font-bold mt-3'>Ventas</Text>
       <FlatList
         data={allSales}
         keyExtractor={(sale) => sale.clientPhoneNumber}
@@ -64,6 +65,7 @@ const Sales = () => {
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
         ListEmptyComponent={() => <EmptyState title="Hoy no se realizaron ventas" subtitle="Cuando realices una venta, aparecerá en esta pestaña"/>}
         contentContainerStyle={{ flexGrow: 1 }}
+        style={{marginTop: 20}}
       />
       <View className="w-[40px] h-[40px] mt-6 mr-2 absolute top-[25px] right-0">
         <CustomButton icon="add" handlePress={() => { router.push(`/create-sale`); }} />

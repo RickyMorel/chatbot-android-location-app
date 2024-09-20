@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import StockEntry from '../../components/StockEntry'
 import axios from 'axios';
 import Utils from '../Utils'
+import globalVars from '../globalVars';
 
 const Card = ({title, value}) => {
   return(
@@ -37,7 +38,8 @@ export class Stock extends Component {
     })
 
    try {
-      const response = await axios.get(`http://192.168.100.4:3000/order/confirmed`);
+      const response = await axios.get(`http://192.168.100.4:3000/order/confirmed?movil=${globalVars.getUser().movil}`);
+      console.log("stock response", response.data)
 
       let totalProducts = []
       let totalMoney = 0

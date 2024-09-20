@@ -7,6 +7,7 @@ import axios from 'axios';
 import CreateSaleItem from '../../components/CreateSaleItem';
 import { icons } from '../../constants';
 import Utils from '../Utils';
+import globalVars from '../globalVars';
 
 const CreateSale = () => {
   const [sale, setSale] = useState(undefined);
@@ -22,8 +23,8 @@ const CreateSale = () => {
       clientName: dataObj?.name ?? "",
       clientPhoneNumber: dataObj?.phoneNumber ?? "",
       order: dataObj?.order?.map(x => ({name: x.name, code: x.code, price: x.price, amount: x.amount})) ?? [],
-      salesPerson: "Juan Pancho",
-      movil: "Movil002",
+      salesPerson: globalVars.getUser().name,
+      movil: globalVars.getUser().movil,
       totalSold: dataObj?.totalSold ?? 0,
       creationDate: dataObj?.creationDate ?? new Date()
     }

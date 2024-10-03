@@ -41,7 +41,7 @@ export class CreateSaleItem extends Component {
     }
 
   render() {
-    const {removeItemCallback, allItems, addItemCallback, isInEditMode} = this.props
+    const {removeItemCallback, allItems, addItemCallback, isInEditMode, errors} = this.props
     const {item} = this.state
 
     let maxCharacterLength = 18
@@ -69,7 +69,7 @@ export class CreateSaleItem extends Component {
                 }
                 {
                     isInEditMode ? 
-                        <CustomInput placeholder="Cantidad" keyboardType="numeric" value={item.amount} otherStyles="h-[25px] w-[25px]" handleChangeText={this.handleChangeAmount}/>
+                        <CustomInput hasError={errors.includes("amount") && !item.amount} placeholder="Cantidad" keyboardType="numeric" value={item.amount} otherStyles="h-[25px] w-[25px]" handleChangeText={this.handleChangeAmount}/>
                     :
                         <Text className="text-gray-600 text-center">{item.amount}</Text>
                 }

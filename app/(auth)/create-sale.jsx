@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, FlatList } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { useRouter, useLocalSearchParams, router } from 'expo-router';
-import CustomButton from '../../components/CustomButton';
 import axios from 'axios';
+import { router, useLocalSearchParams } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import CreateSaleItem from '../../components/CreateSaleItem';
-import { icons } from '../../constants';
+import CustomButton from '../../components/CustomButton';
 import Utils from '../Utils';
 import globalVars from '../globalVars';
-import CustomDropdown from '../../components/CustomDropdown';
 
 const CreateSale = () => {
   const [sale, setSale] = useState(undefined);
   const [itemImages, setItemImages] = useState([]);
   const [allItems, setAllItems] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [isInEditMode, setIsInEditMode] = useState(false);
   const { data } = useLocalSearchParams();
 
@@ -72,7 +71,8 @@ const CreateSale = () => {
   };
 
   const createSale = async () => {
-    console.log("createSale", sale)
+    if(hasErrors() == true) {return;}
+
     try {
       const response = await axios.post('http://192.168.100.4:3000/sales/createSale', sale);
       console.log('Sale created successfully:', response.data);
@@ -82,15 +82,31 @@ const CreateSale = () => {
     }
   };
 
-  const handleClientSelect = async (phoneNumber) => {
-    const client = await fetchClientByNumber(phoneNumber)
+  const hasErrors = () => {
+    let errors = []
 
-    let newSale = {...sale}
-    newSale.clientPhoneNumber = phoneNumber
-    newSale.clientName = client.name
-    console.log("newSale", newSale)
+    if(sale.order.length < 1) { errors.push("empty order")}
 
-    setSale(newSale)
+    for(const item of sale.order) {
+      if(!item.amount || item.amount == 0) {
+        errors.push("amount")
+      }
+    }
+
+    setErrors(errors)
+
+    if(errors.length > 0) {return true;}
+
+    return false
+  }
+
+  const getErrorMessages = () => {
+    let errorMessages = ""
+
+    if(errors.includes("amount")) {errorMessages += "*Algunos items no tienen cantidad"}
+    if(errors.includes("empty order")) {errorMessages += "*No se puede hacer una venta sin items"}
+
+    return errorMessages.trimEnd("\n")
   }
 
   const enterEditMode = (forceTrue = false) => {
@@ -145,21 +161,22 @@ const CreateSale = () => {
         data={flatListData}
         keyExtractor={(item) => item.code}
         renderItem={({item}) => (
-            <CreateSaleItem allItems={allItems} item={item} updateItemCallback={updateItem} removeItemCallback={removeItem} addItemCallback={addItem} isInEditMode={isInEditMode}/>
+            <CreateSaleItem errors={errors} allItems={allItems} item={item} updateItemCallback={updateItem} removeItemCallback={removeItem} addItemCallback={addItem} isInEditMode={isInEditMode}/>
         )}
         viewabilityConfig={{
           itemVisiblePercentThreshold: 70
         }}
       />
       <View className="w-full h-[150px] bottom-0 right-0 left-0 bg-primary p-2">
-        <View className='flex-row justify-between pb-4'>
+        <View className='flex-row justify-between pb-1'>
           <View>
             <Text className='text-center font-bold pb-2'>{sale?.clientName}</Text>
             <Text className='text-left'>Total: {Utils.formatCurrency(sale?.order?.reduce((acc, item) => acc + (+item.price * +item.amount), 0))}</Text>
           </View>
           <View className="w-[40px] h-[40px]"><CustomButton icon={isInEditMode ? "visibility" : "edit"} handlePress={enterEditMode}/></View>
         </View>
-        <View className='h-[60px]'><CustomButton title="Confirmar Venta" handlePress={createSale}/></View>
+        {errors.length > 0 ? <Text className=" text-sm text-red-600 font-pregular mb-1">{getErrorMessages()}</Text> : <></>} 
+        <View className='h-[60px] mt-1'><CustomButton hasError={errors.length > 0} title="Confirmar Venta" handlePress={createSale}/></View>
       </View>
     </View>
     </SafeAreaView>

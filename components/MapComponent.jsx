@@ -7,6 +7,7 @@ import CustomButton from './CustomButton';
 import { useRouter } from 'expo-router';
 import GenericPopup from '../app/popups/GenericPopup';
 import Utils from '../app/Utils';
+import MapPinCard from './MapPinCard';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A';
 
@@ -20,7 +21,6 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
   const [todaysClientLocations, setTodaysClientLocations] = useState([]);
   const [personToMessage, setPersonToMessage] = useState('');
   const [personNameToMessage, setNamePersonToMessage] = useState('');
-  const popupRef = useRef(false);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -364,18 +364,10 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
   };
 
   const openWhatsappPopup = (phoneNumber, name = "") => {
-    popupRef.current.setModalVisible(true)
-
+    console.log("openWhatsappPopup", phoneNumber)
     setPersonToMessage(phoneNumber)
     setNamePersonToMessage(name)
   }
-
-  const openWhatsApp = (phoneNumber) => {
-    const url = `whatsapp://send?phone=${phoneNumber}`;
-    Linking.openURL(url).catch(() => {
-      alert('Asegurate que WhatsApp este instalado en tu dispositivo');
-    });
-  };
 
   const allMarkers = orderLocations.map((x) => (
     <Marker
@@ -399,7 +391,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
 
   return (
     <View style={styles.container} className="items-center justify-center">
-      <GenericPopup title={`Mensajear a ${personNameToMessage.length > 1 ? personNameToMessage : Utils.formatPhoneNumber(personToMessage)} en whatsapp?`} ref={popupRef} confirmCallback={() => openWhatsApp(personToMessage)}/>
+      <MapPinCard clientName={personNameToMessage.length > 1 ? personNameToMessage : Utils.formatPhoneNumber(personToMessage)} clientNumber={personToMessage} isOpen={personToMessage.length > 0} closeCallback={() => openWhatsappPopup('')}/>
       <MapView
         ref={mapRef}
         style={styles.map}

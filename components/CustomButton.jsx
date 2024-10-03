@@ -9,20 +9,19 @@ export class CustomButton extends Component {
 
     return (
       <TouchableOpacity 
-        // className={`w-full h-full bg-secondary rounded-xl justify-center items-center ${containerStyles} ${isLoading ? 'opacity-50' : ''}`} 
         className={`w-full h-full rounded-xl justify-center items-center ${containerStyles} ${isLoading ? 'opacity-50' : ''}`} 
         style={style(false)}
         onPress={handlePress}
         activeOpacity={0.7}
         disabled={isLoading}
     >
-        {title ? <Text className={`text-primary font-psemibold text-lg ${textStyles}`}>{title}</Text> : <></>}
         {
           icon ? 
           <IconElement icon={icon} iconSize={iconSize} iconType={iconType}/>
           : 
           <></>
         }
+        {title ? <Text className={`text-primary font-psemibold text-lg ${textStyles} ${icon ? 'ml-1' : ''}`}>{title}</Text> : <></>}
       </TouchableOpacity>
     )
   }

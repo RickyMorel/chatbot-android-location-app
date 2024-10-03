@@ -8,6 +8,7 @@ import CreateSaleItem from '../../components/CreateSaleItem';
 import { icons } from '../../constants';
 import Utils from '../Utils';
 import globalVars from '../globalVars';
+import CustomDropdown from '../../components/CustomDropdown';
 
 const CreateSale = () => {
   const [sale, setSale] = useState(undefined);
@@ -17,19 +18,7 @@ const CreateSale = () => {
   const { data } = useLocalSearchParams();
 
   useEffect(() => {
-    const dataObj = data ? JSON.parse(data) : undefined;
-
-    const saleData = {
-      clientName: dataObj?.name ?? "",
-      clientPhoneNumber: dataObj?.phoneNumber ?? "",
-      order: dataObj?.order?.map(x => ({name: x.name, code: x.code, price: x.price, amount: x.amount})) ?? [],
-      salesPerson: globalVars.getUser().name,
-      movil: globalVars.getUser().movil,
-      totalSold: dataObj?.totalSold ?? 0,
-      creationDate: dataObj?.creationDate ?? new Date()
-    }
-
-    setSale(saleData)
+    setSaleDataAsync()
   }, [data]);
 
   useEffect(() => {
@@ -38,13 +27,49 @@ const CreateSale = () => {
     fetchAllItems()
   }, [sale]);
 
+  const setSaleDataAsync = async () => {
+    const dataObj = data ? JSON.parse(data) : undefined;
+    
+    console.log("setSaleDataAsync", dataObj)
+
+    let clientName = dataObj?.name?.trim()
+
+    if(!clientName || clientName.length < 1) { 
+      const response = await fetchClientByNumber(dataObj?.phoneNumber)
+      console.log("response data", response)
+      clientName = response.name.trim();
+    }
+
+    console.log("clientName", clientName)
+
+    const saleData = {
+      clientName: clientName,
+      clientPhoneNumber: dataObj?.phoneNumber ?? "",
+      order: dataObj?.order?.map(x => ({name: x.name, code: x.code, price: x.price, amount: x.amount})) ?? [],
+      salesPerson: globalVars.getUser().name,
+      movil: globalVars.getUser().movil,
+      totalSold: dataObj?.totalSold ?? 0,
+      creationDate: dataObj?.creationDate ?? new Date(),
+    }
+
+    setSale(saleData)
+  }
+
   fetchAllItems = async () => {
     try {
        const response = await axios.get(`http://192.168.100.4:3000/inventory/allItemsMobile`);
        setAllItems(response.data)
        setItemImages(response.data.map(x => ({code: x.code, imageLink: x.imageLink})))
      } catch (error) {console.log('Error:', error.message);} 
-   }
+  }
+
+  fetchClientByNumber = async (phoneNumber) => {
+    try {
+      const response = await axios.get(`http://192.168.100.4:3000/client-crud/getClientByPhoneNumber?phoneNumber=${phoneNumber}`);
+      console.log("fetchClientByNumber", phoneNumber, response.data)
+      return response.data
+    } catch (error) {}
+  };
 
   const createSale = async () => {
     console.log("createSale", sale)
@@ -56,6 +81,17 @@ const CreateSale = () => {
       console.log('Error:', error.message);
     }
   };
+
+  const handleClientSelect = async (phoneNumber) => {
+    const client = await fetchClientByNumber(phoneNumber)
+
+    let newSale = {...sale}
+    newSale.clientPhoneNumber = phoneNumber
+    newSale.clientName = client.name
+    console.log("newSale", newSale)
+
+    setSale(newSale)
+  }
 
   const enterEditMode = (forceTrue = false) => {
     if(forceTrue == true) { setIsInEditMode(true); return; }
@@ -118,8 +154,8 @@ const CreateSale = () => {
       <View className="w-full h-[150px] bottom-0 right-0 left-0 bg-primary p-2">
         <View className='flex-row justify-between pb-4'>
           <View>
-            <Text className='text-center font-bold pb-2 pl-3'>{sale?.clientName}</Text>
-            <Text className='text-center'>Total: {Utils.formatCurrency(sale?.order?.reduce((acc, item) => acc + (+item.price * +item.amount), 0))}</Text>
+            <Text className='text-center font-bold pb-2'>{sale?.clientName}</Text>
+            <Text className='text-left'>Total: {Utils.formatCurrency(sale?.order?.reduce((acc, item) => acc + (+item.price * +item.amount), 0))}</Text>
           </View>
           <View className="w-[40px] h-[40px]"><CustomButton icon={isInEditMode ? "visibility" : "edit"} handlePress={enterEditMode}/></View>
         </View>

@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "react_native_tutorial",
-    "slug": "react_native_tutorial",
+    "name": "WhatsBot Pedidos",
+    "slug": "WhatsBot Pedidos",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "icon": "./assets/whatsbot_icon.png",
+    "scheme": "WhatsBot Pedidos",
     "userInterfaceStyle": "automatic",
     "extra": {
       "apiUrl": "http://192.168.100.4:3000",

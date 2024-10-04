@@ -108,6 +108,7 @@ export class Stock extends Component {
           viewabilityConfig={{
             itemVisiblePercentThreshold: 70
           }}
+          style={{marginBottom: 90}}
         />
       </SafeAreaView>
     )

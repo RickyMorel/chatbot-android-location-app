@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
 import FormField from '../../components/FormField';
 import globalVars from '../globalVars';
+import Constants from 'expo-constants';
 
 class SignIn extends Component {
   constructor() {
@@ -59,7 +60,7 @@ class SignIn extends Component {
     if(this.hasErrors() == true) {return;}
 
     try {
-      const response = await axios.post('http://192.168.100.4:3000/auth/signin', {email: email, password: password});
+      const response = await axios.post(`${Constants.expoConfig.extra.apiUrl}/auth/signin`, {email: email, password: password});
     
       if(response.data.message) { throw new Error(response.data)}
 

@@ -12,6 +12,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { firebase, storage } from '../firebaseConfig';
 import CustomDropdown from '../../components/CustomDropdown';
 import IconElement from '../../components/IconElement';
+import Constants from 'expo-constants';
 
 const CreateClient = () => {
     const [image, setImage] = useState(null);
@@ -35,7 +36,7 @@ const CreateClient = () => {
 
     const fetchAllClientLocations = async () => {
         try {
-          const response = await axios.get(`http://192.168.100.4:3000/client-crud/getAllClientZones`);
+          const response = await axios.get(`${Constants.expoConfig.extra.apiUrl}/client-crud/getAllClientZones`);
     
           setClientLocations([...response.data.filter(x => x.includes(',') == false && x != "NO MENSAJEAR")])
         } catch (error) {
@@ -106,7 +107,7 @@ const CreateClient = () => {
         };
 
         try {
-            const response = await axios.post('http://192.168.100.4:3000/client-crud/createWithLocation', clientData);
+            const response = await axios.post(`${Constants.expoConfig.extra.apiUrl}/client-crud/createWithLocation`, clientData);
             console.log("response", response)
             router.back();
             router.back();

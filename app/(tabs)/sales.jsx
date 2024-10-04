@@ -9,6 +9,7 @@ import {EmptyState} from '../../components/EmptyState'
 import CustomButton from '../../components/CustomButton';
 import { useRouter } from 'expo-router';
 import globalVars from '../globalVars';
+import Constants from 'expo-constants';
 
 const Sales = () => {
   const router = useRouter();
@@ -22,7 +23,7 @@ const Sales = () => {
     console.log("fetchSales")
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://192.168.100.4:3000/sales?movil=${globalVars.getUser().movil}`);
+      const response = await axios.get(`${Constants.expoConfig.extra.apiUrl}/sales?movil=${globalVars.getUser().movil}`);
       setAllSales(response.data);
     } catch (error) {
       console.log('Error:', error.message);
@@ -39,7 +40,7 @@ const Sales = () => {
 
   const handleDelete = async (sale) => {
     console.log("handleDelete")
-    const response = await axios.post('http://192.168.100.4:3000/sales/delete', {clientPhoneNumber: sale.clientPhoneNumber, creationDate: sale.creationDate});
+    const response = await axios.post(`${Constants.expoConfig.extra.apiUrl}/sales/delete`, {clientPhoneNumber: sale.clientPhoneNumber, creationDate: sale.creationDate});
 
     let newSales = [...allSales]
     
@@ -67,9 +68,9 @@ const Sales = () => {
         contentContainerStyle={{ flexGrow: 1 }}
         style={{marginTop: 20}}
       />
-      <View className="w-[40px] h-[40px] mt-6 mr-2 absolute top-[25px] right-0">
+      {/* <View className="w-[40px] h-[40px] mt-6 mr-2 absolute top-[25px] right-0">
         <CustomButton icon="add" handlePress={() => { router.push(`/create-sale`); }} />
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };

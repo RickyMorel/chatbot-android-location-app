@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
+import Constants from 'expo-constants';
 import FormField from '../../components/FormField';
 
 class SignUp extends Component {
@@ -66,7 +67,7 @@ class SignUp extends Component {
     if(this.hasErrors() == true) {return;}
 
     try {
-      const response = await axios.post('http://192.168.100.4:3000/auth/signup', {name: username, email: email, password: password});
+      const response = await axios.post(`${Constants.expoConfig.extra.apiUrl}/auth/signup`, {name: username, email: email, password: password});
       console.log('account created successfully:', response.data);
 
       // globalVars.setUser(response.data)

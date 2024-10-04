@@ -5,6 +5,7 @@ import StockEntry from '../../components/StockEntry'
 import axios from 'axios';
 import Utils from '../Utils'
 import globalVars from '../globalVars';
+import Constants from 'expo-constants';
 
 const Card = ({title, value}) => {
   return(
@@ -38,7 +39,7 @@ export class Stock extends Component {
     })
 
    try {
-      const response = await axios.get(`http://192.168.100.4:3000/order/confirmed?movil=${globalVars.getUser().movil}`);
+      const response = await axios.get(`${Constants.expoConfig.extra.apiUrl}/order/confirmed?movil=${globalVars.getUser().movil}`);
       console.log("stock response", response.data)
 
       let totalProducts = []
@@ -77,7 +78,7 @@ export class Stock extends Component {
     })
 
    try {
-      const response = await axios.put(`http://192.168.100.4:3000/inventory/getItemsByCode`, allProducts.map(x => x.code));
+      const response = await axios.put(`${Constants.expoConfig.extra.apiUrl}/inventory/getItemsByCode`, allProducts.map(x => x.code));
 
       this.setState({
         itemImages: response.data

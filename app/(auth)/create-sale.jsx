@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
@@ -56,7 +57,7 @@ const CreateSale = () => {
 
   fetchAllItems = async () => {
     try {
-       const response = await axios.get(`http://192.168.100.4:3000/inventory/allItemsMobile`);
+       const response = await axios.get(`${Constants.expoConfig.extra.apiUrl}/inventory/allItemsMobile`);
        setAllItems(response.data)
        setItemImages(response.data.map(x => ({code: x.code, imageLink: x.imageLink})))
      } catch (error) {console.log('Error:', error.message);} 
@@ -64,7 +65,7 @@ const CreateSale = () => {
 
   fetchClientByNumber = async (phoneNumber) => {
     try {
-      const response = await axios.get(`http://192.168.100.4:3000/client-crud/getClientByPhoneNumber?phoneNumber=${phoneNumber}`);
+      const response = await axios.get(`${Constants.expoConfig.extra.apiUrl}/client-crud/getClientByPhoneNumber?phoneNumber=${phoneNumber}`);
       console.log("fetchClientByNumber", phoneNumber, response.data)
       return response.data
     } catch (error) {}
@@ -74,7 +75,7 @@ const CreateSale = () => {
     if(hasErrors() == true) {return;}
 
     try {
-      const response = await axios.post('http://192.168.100.4:3000/sales/createSale', sale);
+      const response = await axios.post(`${Constants.expoConfig.extra.apiUrl}/sales/createSale`, sale);
       console.log('Sale created successfully:', response.data);
       router.back()
     } catch (error) {

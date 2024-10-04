@@ -1,17 +1,17 @@
 import axios from 'axios';
-import React, { useState, useEffect, useRef } from 'react';
-import { Image, Linking, StyleSheet, View, Alert } from 'react-native';
+import Constants from 'expo-constants';
+import { useRouter } from 'expo-router';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, Image, Linking, StyleSheet, View } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
+import Utils from '../app/Utils';
 import { icons } from '../constants';
 import CustomButton from './CustomButton';
-import { useRouter } from 'expo-router';
-import GenericPopup from '../app/popups/GenericPopup';
-import Utils from '../app/Utils';
 import MapPinCard from './MapPinCard';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A';
 
-const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
+const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }) => {
   const router = useRouter();
 
   const [routeCoordinates, setRouteCoordinates] = useState([]);
@@ -252,7 +252,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
 
   const fetchAllTodaysClientsLocations = async () => {
     try {
-      const url = `http://192.168.100.4:3000/client-location/getAllTodaysClientLocations`;
+      const url = `${Constants.expoConfig.extra.apiUrl}/client-location/getAllTodaysClientLocations`;
       const response = await axios.get(url);
       setTodaysClientLocations(response.data);
     } catch (error) {
@@ -391,7 +391,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation }) => {
 
   return (
     <View style={styles.container} className="items-center justify-center">
-      <MapPinCard clientName={personNameToMessage.length > 1 ? personNameToMessage : Utils.formatPhoneNumber(personToMessage)} clientNumber={personToMessage} isOpen={personToMessage.length > 0} closeCallback={() => openWhatsappPopup('')}/>
+      <MapPinCard clientName={personNameToMessage.length > 1 ? personNameToMessage : Utils.formatPhoneNumber(personToMessage)} clientNumber={personToMessage} isOpen={personToMessage.length > 0} closeCallback={() => openWhatsappPopup('')} allOrders={allOrders}/>
       <MapView
         ref={mapRef}
         style={styles.map}

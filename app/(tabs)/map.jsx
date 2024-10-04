@@ -6,6 +6,7 @@ import { Alert, Text, View } from 'react-native';
 import CardsView from '../../components/CardsView';
 import MapComponent from '../../components/MapComponent';
 import globalVars from '../globalVars';
+import Constants from 'expo-constants';
 
 const Map = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -45,7 +46,8 @@ const Map = () => {
   const fetchOrderData = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://192.168.100.4:3000/order/confirmed?movil=${globalVars.getUser().movil}`);
+      console.log("Constants", Constants)
+      const response = await axios.get(`${Constants.expoConfig.extra.apiUrl}/order/confirmed?movil=${globalVars.getUser().movil}`);
 
       console.log("fetchOrderData", response.data)
 
@@ -60,7 +62,7 @@ const Map = () => {
   const fetchStoreLocation = async () => {
     setIsLoading(true);
     try {
-      const url = `http://192.168.100.4:3000/client-location/getLocationByNumber?phoneNumber=STORE`;
+      const url = `${Constants.expoConfig.extra.apiUrl}/client-location/getLocationByNumber?phoneNumber=STORE`;
       const response = await axios.get(url);
       setStoreLocation(response.data);
     } catch (error) {
@@ -79,7 +81,7 @@ const Map = () => {
   return (
     <View>
       <View className="w-full h-full">
-        <MapComponent orderLocations={locations ?? []} storeLocation={storeLocation} userLocation={userLocation}/>
+        <MapComponent orderLocations={locations ?? []} storeLocation={storeLocation} userLocation={userLocation} allOrders={orders}/>
       </View>
       {
         locations?.length > 0 ?

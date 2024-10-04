@@ -3,7 +3,7 @@ import React from 'react';
 import { Modal, Text, View, TouchableWithoutFeedback, Linking } from 'react-native';
 import CustomButton from './CustomButton';
 
-const MapPinCard = ({ clientName, clientNumber, isOpen, closeCallback }) => {
+const MapPinCard = ({ clientName, clientNumber, isOpen, closeCallback, allOrders }) => {
   const router = useRouter();
 
   const openWhatsApp = (phoneNumber) => {
@@ -13,7 +13,9 @@ const MapPinCard = ({ clientName, clientNumber, isOpen, closeCallback }) => {
     });
   };
 
-  const serializedData = encodeURIComponent(JSON.stringify({phoneNumber: clientNumber}));
+  const foundOrder = allOrders.find(x => x.phoneNumber == clientNumber)
+
+  const serializedData = encodeURIComponent(JSON.stringify({phoneNumber: clientNumber, order: foundOrder?.order}));
 
   return (
     <Modal

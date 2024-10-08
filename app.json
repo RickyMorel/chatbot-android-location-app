@@ -1,18 +1,21 @@
 {
   "expo": {
     "name": "WhatsBot Pedidos",
-    "slug": "WhatsBot Pedidos",
+    "slug": "whatsbot-pedidos",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/whatsbot_icon.png",
-    "scheme": "WhatsBot Pedidos",
+    "icon": "./assets/images/icon.png",
+    "scheme": "whatsbot-pedidos",
     "userInterfaceStyle": "automatic",
     "extra": {
-      "apiUrl": "http://192.168.100.4:3000",
-      "anotherVar": "value"
+      "apiUrl": "https://ec2-18-228-211-145.sa-east-1.compute.amazonaws.com",
+      "anotherVar": "value",
+      "eas": {
+        "projectId": "4272d3a6-e7c9-425f-95ce-fb977f0ca7d9"
+      }
     },
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,23 +23,25 @@
       "supportsTablet": true,
       "config": {
         "googleMapsApiKey": "AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A"
-      }
+      },
+      "bundleIdentifier": "whatsbot"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/whatsbot_icon.jpg",
         "backgroundColor": "#ffffff"
       },
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A"
         }
-      }
+      },
+      "package": "com.ricky_mexx.whatsbotpedidos"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/whatsbot_icon.jpg"
     },
     "plugins": [
       "expo-router"

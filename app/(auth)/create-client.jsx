@@ -1,18 +1,16 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
+import * as ImagePicker from 'expo-image-picker';
 import { router, useLocalSearchParams } from 'expo-router';
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, Platform, ScrollView } from 'react-native';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import React, { useEffect, useRef, useState } from 'react';
+import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
-import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
-import FormField from '../../components/FormField';
-import MapView, { Marker } from 'react-native-maps';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { firebase, storage } from '../firebaseConfig';
 import CustomDropdown from '../../components/CustomDropdown';
+import FormField from '../../components/FormField';
 import IconElement from '../../components/IconElement';
-import Constants from 'expo-constants';
+import { storage } from '../firebaseConfig';
 
 const CreateClient = () => {
     const [image, setImage] = useState(null);

@@ -85,7 +85,7 @@ const Map = () => {
       </View>
       {
         locations?.length > 0 ?
-        <View className="w-full h-[100px] absolute bottom-0 bg-primary">
+        <View className="w-full h-[90px] absolute bottom-0 bg-primary justify-center">
           <CardsView posts={orders ?? []} />
         </View>
         :

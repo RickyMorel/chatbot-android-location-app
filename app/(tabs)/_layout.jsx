@@ -6,7 +6,6 @@ import Colors from '../colors';
 const TabIcon = ({icon, color, name ,focused}) => {
     return (
         <View className="items-center justify-center gap-2">
-            {/* <Image source={icon} resizeMode="contain" tintColor={color} className="w-6 h-6"/> */}
             <MaterialIcons name={icon} size={24} color={color} className="w-6 h-6"/> 
             <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{color: color}}>
                 {name}
@@ -34,11 +33,11 @@ const TabsLayout = () => {
 const tabStyle = {
     tabBarShowLabel: false,
     tabBarActiveTintColor: Colors.Secondary,
-    tabBarInactiveTintColor: '#CDCDE0',
+    tabBarInactiveTintColor: '#1A1A1A',
     tabBarStyle: {
-        backgroundColor: '#161622',
+        backgroundColor: Colors.Primary,
         borderTopWidth: 1,
-        borderTopColor: '#232533',
+        borderTopColor: "#E5E5E5",
         height: 84
     }
 }

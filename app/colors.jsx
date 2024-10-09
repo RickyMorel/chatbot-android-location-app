@@ -1,6 +1,8 @@
 class Colors {
-    static Primary = '#FFFFFF';   
-    static Secondary = '#ba9c4e'; 
+    static Primary = '#F3F3F3';   
+    static Secondary = '#4caf50'; 
+    static Third = '#075e54'; 
+    static Fourth = '#dcf8c6'; 
   }
   
   export default Colors;

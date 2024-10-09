@@ -27,6 +27,10 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
     setCurrentUserLocation(userLocation);
   }, [userLocation]);
 
+  const orderMarkerColor = "#25d366"
+  const locationMarkerColor = "#075e54"
+  const routeColor = "#25d366"
+
   useEffect(() => {
     if (userLocation && orderLocations) {
       fitToMarkers();
@@ -376,6 +380,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
       title={x.name}
       description={`${Intl.NumberFormat('de-DE').format(x.totalSold)}gs`}
       onPress={() => openWhatsappPopup(x.locationDto.phoneNumber, x.name)}
+      pinColor={orderMarkerColor}
     />
   ));
 
@@ -384,7 +389,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
       key={x.phoneNumber}
       coordinate={{ latitude: x?.location?.lat, longitude: x?.location?.lng }}
       title={Utils.formatPhoneNumber(x.phoneNumber)}
-      pinColor='blue'
+      pinColor={locationMarkerColor}
       onPress={() => openWhatsappPopup(x.phoneNumber)}
     />
   ));
@@ -418,15 +423,15 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
         {routeCoordinates && (
           <Polyline
             coordinates={routeCoordinates}
-            strokeWidth={3}
-            strokeColor="hotpink"
+            strokeWidth={4}
+            strokeColor={routeColor}
           />
         )}
       </MapView>
 
       {
         orderLocations?.length > 0 ?
-        <View className="w-[150px] h-[40px] mt-6 mr-2 absolute bottom-[120px] right-0">
+        <View className="w-[150px] h-[40px] mt-6 mr-2 absolute bottom-[100px] right-0">
           <CustomButton title="Empezar Ruta" handlePress={openGoogleMaps}/>
         </View>
         :

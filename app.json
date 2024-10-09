@@ -8,7 +8,7 @@
     "scheme": "whatsbot-pedidos",
     "userInterfaceStyle": "automatic",
     "extra": {
-      "apiUrl": "http://192.168.100.4:3000",
+      "apiUrl": "http://ec2-18-228-211-145.sa-east-1.compute.amazonaws.com",
       "anotherVar": "value",
       "eas": {
         "projectId": "4272d3a6-e7c9-425f-95ce-fb977f0ca7d9"

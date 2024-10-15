@@ -34,219 +34,219 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
   useEffect(() => {
     if (userLocation && orderLocations) {
       fitToMarkers();
-      lol()
+      // lol()
       fetchRoute()
     }
   }, [userLocation, orderLocations]);
 
-  const lol = () => {
-    const locationArrays = [
-      [
-        -57.5414531,
-        -25.2195125
-      ],
-      [
-        -57.5521875,
-        -25.2339375
-      ],
-      [
-        -57.5455625,
-        -25.2388125
-      ],
-      [
-        -57.54806250000001,
-        -25.2309375
-      ],
-      [
-        -57.54831249999999,
-        -25.2253125
-      ],
-      [
-        -57.5493125,
-        -25.2344375
-      ],
-      [
-        -57.54968749999999,
-        -25.2311875
-      ],
-      [
-        -57.52993749999999,
-        -25.2141875
-      ],
-      [
-        -57.5534375,
-        -25.2318125
-      ],
-      [
-        -57.54831249999999,
-        -25.2404375
-      ],
-      [
-        -57.5450625,
-        -25.2326875
-      ],
-      [
-        -57.53868749999999,
-        -25.2208125
-      ],
-      [
-        -57.54081249999999,
-        -25.2023125
-      ],
-      [
-        -57.5379375,
-        -25.2205625
-      ],
-      [
-        -57.5355781,
-        -25.2104375
-      ],
-      [
-        -57.5478125,
-        -25.2225625
-      ],
-      [
-        -57.5450625,
-        -25.2341875
-      ],
-      [
-        -57.5485625,
-        -25.2345625
-      ],
-      [
-        -57.55806250000001,
-        -25.2544375
-      ],
-      [
-        -57.5441875,
-        -25.2358125
-      ],
-      [
-        -57.5451875,
-        -25.2329375
-      ],
-      [
-        -57.5460625,
-        -25.2355625
-      ],
-      [
-        -57.5619375,
-        -25.2293125
-      ],
-      [
-        -57.5485625,
-        -25.2341875
-      ],
-      [
-        -57.5464375,
-        -25.1970625
-      ],
-      [
-        -57.53318749999999,
-        -25.2071875
-      ],
-      [
-        -57.54568750000001,
-        -25.2326875
-      ],
-      [
-        -57.5351875,
-        -25.2238125
-      ],
-      [
-        -57.5600625,
-        -25.2548125
-      ],
-      [
-        -57.5206094,
-        -25.1735875
-      ],
-      [
-        -57.5475625,
-        -25.2345625
-      ],
-      [
-        -57.5515625,
-        -25.2419375
-      ],
-      [
-        -57.5568125,
-        -25.2256875
-      ],
-      [
-        -57.54293750000001,
-        -25.2198125
-      ],
-      [
-        -57.5460625,
-        -25.1935625
-      ],
-      [
-        -57.5469375,
-        -25.2236875
-      ],
-      [
-        -57.5599375,
-        -25.2554375
-      ],
-      [
-        -57.5485625,
-        -25.2346875
-      ],
-      [
-        -57.5509375,
-        -25.2350625
-      ],
-      [
-        -57.5409375,
-        -25.2050625
-      ],
-      [
-        -57.5309375,
-        -25.2080625
-      ],
-      [
-        -57.54143750000001,
-        -25.2231875
-      ],
-      [
-        -57.5474844,
-        -25.2228125
-      ],
-      [
-        -57.54381249999999,
-        -25.2211875
-      ],
-      [
-        -57.54906250000001,
-        -25.2354375
-      ],
-      [
-        -57.55056249999999,
-        -25.2355625
-      ]
-    ]
+  // const lol = () => {
+  //   const locationArrays = [
+  //     [
+  //       -57.5414531,
+  //       -25.2195125
+  //     ],
+  //     [
+  //       -57.5521875,
+  //       -25.2339375
+  //     ],
+  //     [
+  //       -57.5455625,
+  //       -25.2388125
+  //     ],
+  //     [
+  //       -57.54806250000001,
+  //       -25.2309375
+  //     ],
+  //     [
+  //       -57.54831249999999,
+  //       -25.2253125
+  //     ],
+  //     [
+  //       -57.5493125,
+  //       -25.2344375
+  //     ],
+  //     [
+  //       -57.54968749999999,
+  //       -25.2311875
+  //     ],
+  //     [
+  //       -57.52993749999999,
+  //       -25.2141875
+  //     ],
+  //     [
+  //       -57.5534375,
+  //       -25.2318125
+  //     ],
+  //     [
+  //       -57.54831249999999,
+  //       -25.2404375
+  //     ],
+  //     [
+  //       -57.5450625,
+  //       -25.2326875
+  //     ],
+  //     [
+  //       -57.53868749999999,
+  //       -25.2208125
+  //     ],
+  //     [
+  //       -57.54081249999999,
+  //       -25.2023125
+  //     ],
+  //     [
+  //       -57.5379375,
+  //       -25.2205625
+  //     ],
+  //     [
+  //       -57.5355781,
+  //       -25.2104375
+  //     ],
+  //     [
+  //       -57.5478125,
+  //       -25.2225625
+  //     ],
+  //     [
+  //       -57.5450625,
+  //       -25.2341875
+  //     ],
+  //     [
+  //       -57.5485625,
+  //       -25.2345625
+  //     ],
+  //     [
+  //       -57.55806250000001,
+  //       -25.2544375
+  //     ],
+  //     [
+  //       -57.5441875,
+  //       -25.2358125
+  //     ],
+  //     [
+  //       -57.5451875,
+  //       -25.2329375
+  //     ],
+  //     [
+  //       -57.5460625,
+  //       -25.2355625
+  //     ],
+  //     [
+  //       -57.5619375,
+  //       -25.2293125
+  //     ],
+  //     [
+  //       -57.5485625,
+  //       -25.2341875
+  //     ],
+  //     [
+  //       -57.5464375,
+  //       -25.1970625
+  //     ],
+  //     [
+  //       -57.53318749999999,
+  //       -25.2071875
+  //     ],
+  //     [
+  //       -57.54568750000001,
+  //       -25.2326875
+  //     ],
+  //     [
+  //       -57.5351875,
+  //       -25.2238125
+  //     ],
+  //     [
+  //       -57.5600625,
+  //       -25.2548125
+  //     ],
+  //     [
+  //       -57.5206094,
+  //       -25.1735875
+  //     ],
+  //     [
+  //       -57.5475625,
+  //       -25.2345625
+  //     ],
+  //     [
+  //       -57.5515625,
+  //       -25.2419375
+  //     ],
+  //     [
+  //       -57.5568125,
+  //       -25.2256875
+  //     ],
+  //     [
+  //       -57.54293750000001,
+  //       -25.2198125
+  //     ],
+  //     [
+  //       -57.5460625,
+  //       -25.1935625
+  //     ],
+  //     [
+  //       -57.5469375,
+  //       -25.2236875
+  //     ],
+  //     [
+  //       -57.5599375,
+  //       -25.2554375
+  //     ],
+  //     [
+  //       -57.5485625,
+  //       -25.2346875
+  //     ],
+  //     [
+  //       -57.5509375,
+  //       -25.2350625
+  //     ],
+  //     [
+  //       -57.5409375,
+  //       -25.2050625
+  //     ],
+  //     [
+  //       -57.5309375,
+  //       -25.2080625
+  //     ],
+  //     [
+  //       -57.54143750000001,
+  //       -25.2231875
+  //     ],
+  //     [
+  //       -57.5474844,
+  //       -25.2228125
+  //     ],
+  //     [
+  //       -57.54381249999999,
+  //       -25.2211875
+  //     ],
+  //     [
+  //       -57.54906250000001,
+  //       -25.2354375
+  //     ],
+  //     [
+  //       -57.55056249999999,
+  //       -25.2355625
+  //     ]
+  //   ]
 
-    let newArray = []
-    let i = 1
+  //   let newArray = []
+  //   let i = 1
     
-    locationArrays.forEach(location => {
-      const newLocation = {
-        id: `s${i}`,
-        type: "service",
-        address: {
-          location_id: `s${i}`,
-          lat: location[1],
-          lon: location[0]
-        },
-        duration: 120
-      }
+  //   locationArrays.forEach(location => {
+  //     const newLocation = {
+  //       id: `s${i}`,
+  //       type: "service",
+  //       address: {
+  //         location_id: `s${i}`,
+  //         lat: location[1],
+  //         lon: location[0]
+  //       },
+  //       duration: 120
+  //     }
 
-      newArray.push(newLocation)
+  //     newArray.push(newLocation)
 
-      i++
-    });
-  }
+  //     i++
+  //   });
+  // }
 
   useEffect(() => {
     if(viewTodaysClientLocations == false) {return;}
@@ -302,18 +302,34 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
     }
   };
 
+  const orderClosestLocations = (maxLocationAmount) => {
+    if(orderLocations.length < maxLocationAmount) { return orderLocations}
+    
+    return orderLocations.sort((a, b) => {
+      const distanceA = Utils.getDistanceFromLatLonInKm({lat: userLocation.latitude, lng: userLocation.longitude}, a.locationDto.location);
+      const distanceB = Utils.getDistanceFromLatLonInKm({lat: userLocation.latitude, lng: userLocation.longitude}, b.locationDto.location);
+      return distanceA - distanceB; // Sort in ascending order
+    });
+  };
+
   const fetchRoute = async () => {
     console.log("fetchRoute")
 
-    if (userLocation && orderLocations.length > 0) { 
-      const waypoints = `optimize:true|${orderLocations.map(location => `${location.locationDto.location.lat},${location.locationDto.location.lng}`).join('|')}`;
-      const destination = storeLocation;
+    const maxLocationAmount = 22
 
-      console.log("userLocation", userLocation)
-      console.log("storeLocation", storeLocation)
+    const closestLocations = orderClosestLocations(maxLocationAmount).slice(0, maxLocationAmount)
+
+    console.log("orderLocation", closestLocations.map(x => x.name))
+
+    console.log("maxLocationAmount", maxLocationAmount, "closestLocations.length", closestLocations.length)
+
+    if (userLocation && closestLocations.length > 0) { 
+      const waypoints = `optimize:true|${closestLocations.map(location => `${location.locationDto.location.lat},${location.locationDto.location.lng}`).join('|')}`;
+      const destination = closestLocations.length < maxLocationAmount ? storeLocation : {location: closestLocations[closestLocations.length - 1].locationDto.location };
+      
+      console.log("destination", destination)
+
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${userLocation.latitude},${userLocation.longitude}&destination=${destination.location.lat},${destination.location.lng}&waypoints=${waypoints}&key=${GOOGLE_MAPS_APIKEY}`;
-
-      console.log("url", url)
 
       try {
         const response = await axios.get(url);
@@ -322,7 +338,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
           const decodedPoints = decodePolyline(points);
 
           const optimizedOrder = response.data.routes[0].waypoint_order;
-          const optimizedWaypoints = optimizedOrder.map(index => orderLocations[index]);
+          const optimizedWaypoints = optimizedOrder.map(index => closestLocations[index]);
 
           setRouteCoordinates(decodedPoints);
           setOptimizedWaypoints(optimizedWaypoints);

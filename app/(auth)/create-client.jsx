@@ -11,6 +11,7 @@ import CustomDropdown from '../../components/CustomDropdown';
 import FormField from '../../components/FormField';
 import IconElement from '../../components/IconElement';
 import { storage } from '../firebaseConfig';
+import Utils from '../Utils';
 
 const CreateClient = () => {
     const [image, setImage] = useState(null);
@@ -34,7 +35,7 @@ const CreateClient = () => {
 
     const fetchAllClientLocations = async () => {
         try {
-          const response = await axios.get(`${Constants.expoConfig.extra.apiUrl}/client-crud/getAllClientZones`);
+          const response = await axios.get(`${Utils.backendLink}/client-crud/getAllClientZones`);
     
           setClientLocations([...response.data.filter(x => x.includes(',') == false && x != "NO MENSAJEAR")])
         } catch (error) {
@@ -105,7 +106,7 @@ const CreateClient = () => {
         };
 
         try {
-            const response = await axios.post(`${Constants.expoConfig.extra.apiUrl}/client-crud/createWithLocation`, clientData);
+            const response = await axios.post(`${Utils.backendLink}/client-crud/createWithLocation`, clientData);
             console.log("response", response)
             router.back();
             router.back();

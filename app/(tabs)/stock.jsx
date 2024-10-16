@@ -39,7 +39,7 @@ export class Stock extends Component {
     })
 
    try {
-      const response = await axios.get(`${Constants.expoConfig.extra.apiUrl}/order/confirmed?movil=${globalVars.getUser().movil}`);
+      const response = await axios.get(`${Utils.backendLink}/order/confirmed?movil=${globalVars.getUser().movil}`);
       console.log("stock response", response.data)
 
       let totalProducts = []
@@ -78,7 +78,7 @@ export class Stock extends Component {
     })
 
    try {
-      const response = await axios.put(`${Constants.expoConfig.extra.apiUrl}/inventory/getItemsByCode`, allProducts.map(x => x.code));
+      const response = await axios.put(`${Utils.backendLink}/inventory/getItemsByCode`, allProducts.map(x => x.code));
 
       this.setState({
         itemImages: response.data

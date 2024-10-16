@@ -7,6 +7,7 @@ import CustomButton from '../../components/CustomButton';
 import FormField from '../../components/FormField';
 import globalVars from '../globalVars';
 import Constants from 'expo-constants';
+import Utils from '../Utils';
 
 class SignIn extends Component {
   constructor() {
@@ -60,7 +61,7 @@ class SignIn extends Component {
     if(this.hasErrors() == true) {return;}
 
     try {
-      const response = await axios.post(`${Constants.expoConfig.extra.apiUrl}/auth/signin`, {email: email, password: password});
+      const response = await axios.post(`${Utils.backendLink}/auth/signin`, {email: email, password: password});
     
       if(response.data.message) { throw new Error(response.data)}
 
@@ -69,6 +70,7 @@ class SignIn extends Component {
       globalVars.setUser(response.data)
       router.push('/map')
     } catch (error) {
+      console.log("sign in error", error)
       this.setState({
         errors: [error.response.data.message]
       })
@@ -95,7 +97,7 @@ class SignIn extends Component {
           <View className='h-[40px] w-full mb-8'>
             <CustomButton title="Iniciar Sesión" handlePress={this.signIn} containerStyles="mt-7" isLoading={this.state.isLoading}/>
           </View>
-          <View className="justify-center pt-5 flex-row gap-2">
+          <View className="justify-center p-3 pt-5 flex-row gap-2">
             <Text className="text-lg text-gray-100 font-pregular">No tenes una cuenta?</Text>
             <Link href="/sign-up" className='text-lg font-psemibold text-secondary'>Crear Cuenta</Link>
           </View>

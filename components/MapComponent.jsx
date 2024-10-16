@@ -256,7 +256,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
 
   const fetchAllTodaysClientsLocations = async () => {
     try {
-      const url = `${Constants.expoConfig.extra.apiUrl}/client-location/getAllTodaysClientLocations`;
+      const url = `${Utils.backendLink}/client-location/getAllTodaysClientLocations`;
       const response = await axios.get(url);
       setTodaysClientLocations(response.data);
     } catch (error) {
@@ -304,7 +304,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
 
   const orderClosestLocations = (maxLocationAmount) => {
     if(orderLocations.length < maxLocationAmount) { return orderLocations}
-    
+
     return orderLocations.sort((a, b) => {
       const distanceA = Utils.getDistanceFromLatLonInKm({lat: userLocation.latitude, lng: userLocation.longitude}, a.locationDto.location);
       const distanceB = Utils.getDistanceFromLatLonInKm({lat: userLocation.latitude, lng: userLocation.longitude}, b.locationDto.location);

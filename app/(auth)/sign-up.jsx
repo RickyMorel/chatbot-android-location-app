@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
 import Constants from 'expo-constants';
 import FormField from '../../components/FormField';
+import Utils from '../Utils';
 
 class SignUp extends Component {
   constructor() {
@@ -67,7 +68,7 @@ class SignUp extends Component {
     if(this.hasErrors() == true) {return;}
 
     try {
-      const response = await axios.post(`${Constants.expoConfig.extra.apiUrl}/auth/signup`, {name: username, email: email, password: password});
+      const response = await axios.post(`${Utils.backendLink}/auth/signup`, {name: username, email: email, password: password});
       console.log('account created successfully:', response.data);
 
       // globalVars.setUser(response.data)

@@ -10,6 +10,7 @@ import CustomButton from '../../components/CustomButton';
 import { useRouter } from 'expo-router';
 import globalVars from '../globalVars';
 import Constants from 'expo-constants';
+import Utils from '../Utils';
 
 const Sales = () => {
   const router = useRouter();
@@ -23,7 +24,7 @@ const Sales = () => {
     console.log("fetchSales")
     setIsLoading(true);
     try {
-      const response = await axios.get(`${Constants.expoConfig.extra.apiUrl}/sales?movil=${globalVars.getUser().movil}`);
+      const response = await axios.get(`${Utils.backendLink}/sales?movil=${globalVars.getUser().movil}`);
       setAllSales(response.data);
     } catch (error) {
       console.log('Error:', error.message);
@@ -40,7 +41,7 @@ const Sales = () => {
 
   const handleDelete = async (sale) => {
     console.log("handleDelete")
-    const response = await axios.post(`${Constants.expoConfig.extra.apiUrl}/sales/delete`, {clientPhoneNumber: sale.clientPhoneNumber, creationDate: sale.creationDate});
+    const response = await axios.post(`${Utils.backendLink}/sales/delete`, {clientPhoneNumber: sale.clientPhoneNumber, creationDate: sale.creationDate});
 
     let newSales = [...allSales]
     

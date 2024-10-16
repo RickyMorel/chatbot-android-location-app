@@ -7,6 +7,7 @@ import CardsView from '../../components/CardsView';
 import MapComponent from '../../components/MapComponent';
 import globalVars from '../globalVars';
 import Constants from 'expo-constants';
+import Utils from '../Utils';
 
 const Map = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -47,7 +48,7 @@ const Map = () => {
     setIsLoading(true);
     try {
       console.log("Constants", Constants)
-      const response = await axios.get(`${Constants.expoConfig.extra.apiUrl}/order/confirmed?movil=${globalVars.getUser().movil}`);
+      const response = await axios.get(`${Utils.backendLink}/order/confirmed?movil=${globalVars.getUser().movil}`);
 
       console.log("fetchOrderData", response.data)
 
@@ -62,7 +63,7 @@ const Map = () => {
   const fetchStoreLocation = async () => {
     setIsLoading(true);
     try {
-      const url = `${Constants.expoConfig.extra.apiUrl}/client-location/getLocationByNumber?phoneNumber=STORE`;
+      const url = `${Utils.backendLink}/client-location/getLocationByNumber?phoneNumber=STORE`;
       const response = await axios.get(url);
       setStoreLocation(response.data);
     } catch (error) {

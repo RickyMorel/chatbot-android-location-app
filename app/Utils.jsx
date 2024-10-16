@@ -1,4 +1,6 @@
 class Utils {
+    static backendLink = "https://ec2-18-228-211-145.sa-east-1.compute.amazonaws.com"
+
     static formatCurrency(price) {
         return `${Intl.NumberFormat('de-DE').format(price)} gs`
     }

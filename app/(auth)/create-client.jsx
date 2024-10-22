@@ -12,6 +12,7 @@ import FormField from '../../components/FormField';
 import IconElement from '../../components/IconElement';
 import { storage } from '../firebaseConfig';
 import Utils from '../Utils';
+import globalVars from '../globalVars';
 
 const CreateClient = () => {
     const [image, setImage] = useState(null);
@@ -34,6 +35,7 @@ const CreateClient = () => {
     }, []);
 
     const fetchAllClientLocations = async () => {
+        globalVars.setIsLoading(true)
         try {
           const response = await axios.get(`${Utils.backendLink}/client-crud/getAllClientZones`);
     
@@ -41,6 +43,8 @@ const CreateClient = () => {
         } catch (error) {
           console.log("error", error)
           return error
+        } finally {
+            globalVars.setIsLoading(false)
         }
     };
 
@@ -94,6 +98,8 @@ const CreateClient = () => {
     };
 
     const createClient = async () => {
+        globalVars.setIsLoading(true)
+
         const imageUrl = await uploadImageToFirebase(image);
 
         const clientData = {
@@ -112,6 +118,8 @@ const CreateClient = () => {
             router.back();
         } catch (error) {
             console.log('Error:', error.message);
+        } finally {
+            globalVars.setIsLoading(false)
         }
     };
 

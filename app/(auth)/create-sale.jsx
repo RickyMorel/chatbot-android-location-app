@@ -56,11 +56,16 @@ const CreateSale = () => {
   }
 
   fetchAllItems = async () => {
+    globalVars.setIsLoading(true)
+
     try {
        const response = await axios.get(`${Utils.backendLink}/inventory/allItemsMobile`);
        setAllItems(response.data)
        setItemImages(response.data.map(x => ({code: x.code, imageLink: x.imageLink})))
      } catch (error) {console.log('Error:', error.message);} 
+     finally {
+      globalVars.setIsLoading(false)
+     }
   }
 
   fetchClientByNumber = async (phoneNumber) => {
@@ -74,12 +79,16 @@ const CreateSale = () => {
   const createSale = async () => {
     if(hasErrors() == true) {return;}
 
+    globalVars.setIsLoading(true)
+
     try {
       const response = await axios.post(`${Utils.backendLink}/sales/createSale`, sale);
       console.log('Sale created successfully:', response.data);
       router.back()
     } catch (error) {
       console.log('Error:', error.message);
+    } finally {
+      globalVars.setIsLoading(false)
     }
   };
 

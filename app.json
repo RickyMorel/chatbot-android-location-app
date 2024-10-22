@@ -27,6 +27,9 @@
       "bundleIdentifier": "whatsbot"
     },
     "android": {
+      "permissions": [
+        "INTERNET"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
@@ -36,7 +39,8 @@
           "apiKey": "AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A"
         }
       },
-      "package": "com.ricky_mexx.whatsbotpedidos"
+      "package": "com.ricky_mexx.whatsbotpedidos",
+      "usesCleartextTraffic": true
     },
     "web": {
       "bundler": "metro",
@@ -44,7 +48,8 @@
       "favicon": "./assets/icon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [ "expo-build-properties", { "android": { "usesCleartextTraffic": true } } ] 
     ],
     "experiments": {
       "typedRoutes": true

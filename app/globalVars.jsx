@@ -6,7 +6,8 @@ class GlobalVars {
         return GlobalVars.instance;
       }
       this.globalData = {
-        user: undefined
+        user: undefined,
+        isLoading: false
       };
       GlobalVars.instance = this;
     }
@@ -17,6 +18,14 @@ class GlobalVars {
   
     getUser() {
       return this.globalData.user;
+    }
+    
+    setIsLoading = (isLoading) => {
+      this.globalData.isLoading = isLoading
+    }
+
+    getIsLoading() {
+      return this.globalData.isLoading;
     }
   }
   

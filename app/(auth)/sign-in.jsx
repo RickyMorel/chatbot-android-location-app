@@ -5,9 +5,8 @@ import { Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
 import FormField from '../../components/FormField';
-import globalVars from '../globalVars';
-import Constants from 'expo-constants';
 import Utils from '../Utils';
+import globalVars from '../globalVars';
 
 class SignIn extends Component {
   constructor() {
@@ -60,15 +59,19 @@ class SignIn extends Component {
 
     if(this.hasErrors() == true) {return;}
 
+    globalVars.setIsLoading(true)
+
     try {
-      const response = await axios.post(`${Utils.backendLink}/auth/signin`, {email: email, password: password});
+      // const response = await axios.post(`${Utils.backendLink}/auth/signin`, {email: email, password: password});
     
-      if(response.data.message) { throw new Error(response.data)}
+      // if(response.data.message) { throw new Error(response.data)}
 
-      console.log('signed in successfully:', response.data);
+      // console.log('signed in successfully:', response.data);
 
-      globalVars.setUser(response.data)
-      router.push('/map')
+      // globalVars.setUser(response.data)
+      // globalVars.setIsLoading(false)
+
+      // router.push('/map')
     } catch (error) {
       console.log("sign in error", error)
       this.setState({

@@ -62,16 +62,16 @@ class SignIn extends Component {
     globalVars.setIsLoading(true)
 
     try {
-      // const response = await axios.post(`${Utils.backendLink}/auth/signin`, {email: email, password: password});
+      const response = await axios.post(`${Utils.backendLink}/auth/signin`, {email: email, password: password});
     
-      // if(response.data.message) { throw new Error(response.data)}
+      if(response.data.message) { throw new Error(response.data)}
 
-      // console.log('signed in successfully:', response.data);
+      console.log('signed in successfully:', response.data);
 
-      // globalVars.setUser(response.data)
-      // globalVars.setIsLoading(false)
+      globalVars.setUser(response.data)
+      globalVars.setIsLoading(false)
 
-      // router.push('/map')
+      router.push('/map')
     } catch (error) {
       console.log("sign in error", error)
       this.setState({

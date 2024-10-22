@@ -8,6 +8,7 @@ import Utils from '../app/Utils';
 import { icons } from '../constants';
 import CustomButton from './CustomButton';
 import MapPinCard from './MapPinCard';
+import globalVars from '../app/globalVars';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A';
 
@@ -22,6 +23,8 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
   const [personToMessage, setPersonToMessage] = useState('');
   const [personNameToMessage, setNamePersonToMessage] = useState('');
   const mapRef = useRef(null);
+
+  globalVars.setIsLoading(true)
 
   useEffect(() => {
     setCurrentUserLocation(userLocation);
@@ -45,12 +48,15 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
   }, [viewTodaysClientLocations])
 
   const fetchAllTodaysClientsLocations = async () => {
+    globalVars.setIsLoading(true)
     try {
       const url = `${Utils.backendLink}/client-location/getAllTodaysClientLocations`;
       const response = await axios.get(url);
       setTodaysClientLocations(response.data);
     } catch (error) {
       console.log('Error:', error.message);
+    } finally {
+      globalVars.setIsLoading(false)
     }
   }
 
@@ -137,6 +143,8 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        globalVars.setIsLoading(false)
       }
     }
   };

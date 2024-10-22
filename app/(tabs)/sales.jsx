@@ -22,14 +22,14 @@ const Sales = () => {
 
   const fetchSales = async () => {
     console.log("fetchSales")
-    setIsLoading(true);
+    globalVars.setIsLoading(true)
     try {
       const response = await axios.get(`${Utils.backendLink}/sales?movil=${globalVars.getUser().movil}`);
       setAllSales(response.data);
     } catch (error) {
       console.log('Error:', error.message);
     } finally {
-      setIsLoading(false);
+      globalVars.setIsLoading(false)
     }
   };
 

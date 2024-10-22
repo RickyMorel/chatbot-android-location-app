@@ -33,6 +33,8 @@ export class Stock extends Component {
   }
 
   fetchOrderData = async () => {
+    globalVars.setIsLoading(true)
+
     console.log("fetchOrderData")
     this.setState({
       isLoading: true
@@ -69,6 +71,7 @@ export class Stock extends Component {
       this.setState({
         isLoading: false
       })
+      globalVars.setIsLoading(false)
     }
   };
 

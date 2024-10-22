@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
 import * as Location from 'expo-location';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 import CardsView from '../../components/CardsView';
 import MapComponent from '../../components/MapComponent';
@@ -11,7 +11,6 @@ import Utils from '../Utils';
 
 const Map = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [orders, setOrders] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [storeLocation, setStoreLocation] = useState(null);
@@ -45,7 +44,6 @@ const Map = () => {
   };
 
   const fetchOrderData = async () => {
-    setIsLoading(true);
     try {
       console.log("Constants", Constants)
       const response = await axios.get(`${Utils.backendLink}/order/confirmed?movil=${globalVars.getUser().movil}`);
@@ -56,12 +54,10 @@ const Map = () => {
     } catch (error) {
       console.log('Error:', error.message);
     } finally {
-      setIsLoading(false);
     }
   };
 
   const fetchStoreLocation = async () => {
-    setIsLoading(true);
     try {
       const url = `${Utils.backendLink}/client-location/getLocationByNumber?phoneNumber=STORE`;
       const response = await axios.get(url);
@@ -69,7 +65,6 @@ const Map = () => {
     } catch (error) {
       console.log('Error:', error.message);
     } finally {
-      setIsLoading(false);
     }
   };
 

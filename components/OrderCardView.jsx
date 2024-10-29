@@ -5,6 +5,7 @@ import CustomButton from './CustomButton';
 import Utils from '../app/Utils';
 import { useRouter } from 'expo-router';
 import CreateSaleItem from './CreateSaleItem';
+import Colors from '../app/colors';
 
 const OrderCardView = ({ currentOrder, isOpen, closeCallback }) => {
   const router = useRouter();
@@ -60,14 +61,22 @@ const OrderCardView = ({ currentOrder, isOpen, closeCallback }) => {
               />
             </View>
             <View className="flex-row items-center justify-center mt-2">
-              <View className='mr-4 h-[40px] w-[130px]'>
+              <View className='h-[40px] w-[130px]'>
                 <CustomButton 
                   title="Hacer Venta" 
                   handlePress={() => { router.push(`/create-sale?data=${serializedData}`); closeCallback(); }} 
                 />
               </View>
-              <View className='ml-4 h-[40px] w-[90px]'>
+              <View className='ml-2 h-[40px] w-[90px]'>
                 <CustomButton title="Cerrar" handlePress={closeCallback} />
+              </View>
+              <View className='ml-2 h-[35px] w-[35px] right-0'>
+                <CustomButton 
+                  icon="remove-shopping-cart"
+                  iconType={1}
+                  handlePress={() => openConfirmCancelOrderPopup(true)} 
+                  color={Colors.Red}
+                />
               </View>
             </View>
           </View>

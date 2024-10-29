@@ -24,8 +24,6 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
   const [personNameToMessage, setNamePersonToMessage] = useState('');
   const mapRef = useRef(null);
 
-  globalVars.setIsLoading(true)
-
   useEffect(() => {
     setCurrentUserLocation(userLocation);
   }, [userLocation]);
@@ -183,6 +181,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
 
   const openWhatsappPopup = (phoneNumber, name = "") => {
     console.log("openWhatsappPopup", phoneNumber)
+    globalVars.setIsLoading(false)
     setPersonToMessage(phoneNumber)
     setNamePersonToMessage(name)
   }
@@ -210,7 +209,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
 
   return (
     <View style={styles.container} className="items-center justify-center">
-      <MapPinCard clientName={personNameToMessage.length > 1 ? personNameToMessage : Utils.formatPhoneNumber(personToMessage)} clientNumber={personToMessage} isOpen={personToMessage.length > 0} closeCallback={() => openWhatsappPopup('')} allOrders={allOrders}/>
+      <MapPinCard clientName={personNameToMessage.length > 1 ? personNameToMessage : Utils.formatPhoneNumber(personToMessage)} hasName={personNameToMessage.length > 1} clientNumber={personToMessage} isOpen={personToMessage.length > 0} closeCallback={() => openWhatsappPopup('')} allOrders={allOrders}/>
       <MapView
         ref={mapRef}
         style={styles.map}

@@ -5,12 +5,12 @@ import Colors from '../app/colors';
 
 export class CustomButton extends Component {
   render() {
-    const {title, handlePress, containerStyles, textStyles, isLoading, icon, iconSize, hasError = false, iconType = 1} = this.props
+    const {title, handlePress, containerStyles, textStyles, isLoading, icon, iconSize, color, hasError = false, iconType = 1} = this.props
 
     return (
       <TouchableOpacity 
         className={`w-full h-full rounded-xl justify-center items-center ${containerStyles} ${isLoading ? 'opacity-50' : ''}`} 
-        style={style(hasError)}
+        style={style(hasError, color)}
         onPress={handlePress}
         activeOpacity={0.7}
         disabled={isLoading}
@@ -27,11 +27,11 @@ export class CustomButton extends Component {
   }
 }
 
-const style = (hasError) => ({
+const style = (hasError, color) => ({
   borderWidth: 2,
   borderRadius: 16, 
   borderColor: hasError ? '#ef4444' : '#ffffff',
-  backgroundColor: Colors.Secondary, 
+  backgroundColor: color ?? Colors.Secondary, 
   flexDirection: 'row',
   alignItems: 'center',
   shadowColor: hasError ? '#FF0000' : '#000',

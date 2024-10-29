@@ -1,5 +1,5 @@
 class Utils {
-    static backendLink = "https://test.whatsbotapp.com"
+    static backendLink = "http://192.168.100.4:3000"
     static isLoading = true;
 
     static formatCurrency(price) {

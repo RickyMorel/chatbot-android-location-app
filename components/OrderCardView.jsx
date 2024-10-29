@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Text, Pressable, View, StyleSheet , FlatList, TouchableWithoutFeedback} from 'react-native';
 import { Table, Row, Rows } from 'react-native-table-component';
 import CustomButton from './CustomButton';
@@ -6,9 +6,11 @@ import Utils from '../app/Utils';
 import { useRouter } from 'expo-router';
 import CreateSaleItem from './CreateSaleItem';
 import Colors from '../app/colors';
+import SurePopup from './SurePopup';
 
 const OrderCardView = ({ currentOrder, isOpen, closeCallback }) => {
   const router = useRouter();
+  const [cancelOrderPopupIsOpen, setCancelOrderPopupState] = useState(false);
 
   const tableData = {
     tableHead: ['Nombre Item', 'Cantidad', 'Precio'],
@@ -34,12 +36,17 @@ const OrderCardView = ({ currentOrder, isOpen, closeCallback }) => {
     )
   }
 
+  const openConfirmCancelOrderPopup = (state) => {
+    setCancelOrderPopupState(state ?? true)
+  }
+
   return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={isOpen}
     >
+      <SurePopup clientName={currentOrder?.name} isOpen={cancelOrderPopupIsOpen} closeCallback={() => {openConfirmCancelOrderPopup(false); closeCallback();}}/>
       <TouchableWithoutFeedback onPress={closeCallback}>
         <View className="flex-1 justify-center items-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)' }}>
           <View className="bg-white rounded-lg p-3" style={{ maxHeight: '50%' }}>
@@ -74,7 +81,7 @@ const OrderCardView = ({ currentOrder, isOpen, closeCallback }) => {
                 <CustomButton 
                   icon="remove-shopping-cart"
                   iconType={1}
-                  handlePress={() => openConfirmCancelOrderPopup(true)} 
+                  handlePress={() => {openConfirmCancelOrderPopup(true);}} 
                   color={Colors.Red}
                 />
               </View>

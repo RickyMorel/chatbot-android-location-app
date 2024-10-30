@@ -1,13 +1,14 @@
 import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
 import * as Location from 'expo-location';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 import CardsView from '../../components/CardsView';
 import MapComponent from '../../components/MapComponent';
 import globalVars from '../globalVars';
 import Constants from 'expo-constants';
 import Utils from '../Utils';
+import EventBus from '../../components/EventEmitter';
 
 const Map = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -22,6 +23,21 @@ const Map = () => {
       fetchStoreLocation();
     }, [])
   );
+
+  useEffect(() => { 
+    EventBus.on('canceledOrder', handleCancelOrderEvent);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      EventBus.off('canceledOrder', handleCancelOrderEvent);
+    };
+  }, [orders]);
+
+  const handleCancelOrderEvent = (data) => {
+    console.log("handleCancelOrderEvent", data.clientNumber, orders);
+    let filteredOrders = orders.filter(x => x.phoneNumber != data.clientNumber)
+    setOrders(filteredOrders);
+  };
 
   const requestLocationPermission = async () => {
     try {

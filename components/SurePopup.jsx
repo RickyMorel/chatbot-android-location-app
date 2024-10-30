@@ -5,6 +5,7 @@ import CustomButton from './CustomButton';
 import Colors from '../app/colors';
 import Utils from '../app/Utils';
 import axios from 'axios';
+import EventBus from './EventEmitter';
 
 const SurePopup = ({ clientName, clientNumber, isOpen, closeCallback }) => {
   const router = useRouter();
@@ -12,6 +13,8 @@ const SurePopup = ({ clientName, clientNumber, isOpen, closeCallback }) => {
   cancelOrder = async () => {
    try {
       const response = await axios.put(`${Utils.backendLink}/order/cancelOrder`, {clientNumber: clientNumber});
+      EventBus.emit('canceledOrder', { clientNumber: clientNumber });
+      closeCallback()
     } catch (error) {console.log('Error:', error.message);} 
   }
 

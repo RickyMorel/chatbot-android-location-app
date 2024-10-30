@@ -3,9 +3,17 @@ import React from 'react';
 import { Modal, Text, View, TouchableWithoutFeedback, Linking } from 'react-native';
 import CustomButton from './CustomButton';
 import Colors from '../app/colors';
+import Utils from '../app/Utils';
+import axios from 'axios';
 
-const SurePopup = ({ clientName, isOpen, closeCallback }) => {
+const SurePopup = ({ clientName, clientNumber, isOpen, closeCallback }) => {
   const router = useRouter();
+
+  cancelOrder = async () => {
+   try {
+      const response = await axios.put(`${Utils.backendLink}/order/cancelOrder`, {clientNumber: clientNumber});
+    } catch (error) {console.log('Error:', error.message);} 
+  }
 
   return (
     <Modal
@@ -27,7 +35,7 @@ const SurePopup = ({ clientName, isOpen, closeCallback }) => {
                 <CustomButton 
                 title="Eliminar Pedido" 
                 color={Colors.Red}
-                handlePress={() => openWhatsApp(clientNumber)} 
+                handlePress={() => cancelOrder()} 
               />
             </View>
           </View>

@@ -46,7 +46,7 @@ const OrderCardView = ({ currentOrder, isOpen, closeCallback }) => {
       transparent={true}
       visible={isOpen}
     >
-      <SurePopup clientName={currentOrder?.name} isOpen={cancelOrderPopupIsOpen} closeCallback={() => {openConfirmCancelOrderPopup(false); closeCallback();}}/>
+      <SurePopup clientName={currentOrder?.name} clientNumber={currentOrder?.phoneNumber} isOpen={cancelOrderPopupIsOpen} closeCallback={() => {openConfirmCancelOrderPopup(false); closeCallback();}}/>
       <TouchableWithoutFeedback onPress={closeCallback}>
         <View className="flex-1 justify-center items-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.25)' }}>
           <View className="bg-white rounded-lg p-3" style={{ maxHeight: '50%' }}>

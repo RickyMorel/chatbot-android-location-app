@@ -1,8 +1,11 @@
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LoadingProvider } from '../LoadingProvider'
 import Spinner from '../../components/Spinner'
+import Utils from '../Utils'
+import globalVars from '../globalVars'
+import axios from 'axios'
 
 const AuthLayout = () => {
   return (

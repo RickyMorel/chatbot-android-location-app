@@ -61,10 +61,7 @@ const Map = () => {
 
   const fetchOrderData = async () => {
     try {
-      console.log("Constants", Constants)
       const response = await axios.get(`${Utils.backendLink}/order/confirmed?movil=${globalVars.getUser().movil}`);
-
-      console.log("fetchOrderData", response.data)
 
       setOrders(response.data);
     } catch (error) {

@@ -10,7 +10,7 @@ export const LoadingProvider = ({ children }) => {
   useEffect(() => {
     // Define a callback function that updates the loading state
     const updateLoadingState = (newLoadingState) => {
-      setIsLoading(newLoadingState);
+      setIsLoading(newLoadingState.isLoading);
     };
 
     // Subscribe to loading state changes

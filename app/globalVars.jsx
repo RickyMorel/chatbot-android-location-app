@@ -8,6 +8,7 @@ class GlobalVars {
     this.globalData = {
       user: undefined,
       isLoading: false,
+      globalConfig: undefined
     };
     this.subscribers = []; // Store subscribers
     GlobalVars.instance = this;
@@ -19,6 +20,16 @@ class GlobalVars {
 
   getUser() {
     return this.globalData.user;
+  }
+
+  setGlobalConfig = (globalConfig) => {
+    this.globalData.globalConfig = globalConfig;
+    console.log("setGlobalConfig")
+    this.notifySubscribers(); // Notify all subscribers on change
+  };
+
+  getGlobalConfig() {
+    return this.globalData.globalConfig;
   }
 
   setIsLoading = (isLoading) => {
@@ -39,7 +50,7 @@ class GlobalVars {
   }
 
   notifySubscribers() {
-    this.subscribers.forEach((callback) => callback(this.globalData.isLoading));
+    this.subscribers.forEach((callback) => callback(this.globalData));
   }
 }
 

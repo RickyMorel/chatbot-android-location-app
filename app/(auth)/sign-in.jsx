@@ -17,9 +17,19 @@ class SignIn extends Component {
         password: ''
       },
       errors: [],
+      companyLogoUrl: '',
       isLoading: false
     }
   }
+
+  componentDidMount() {
+    globalVars.subscribe(this.updateGlobalConfig);
+  }
+
+  updateGlobalConfig = (newState) => {
+    console.log("updateGlobalConfig", newState)
+    this.setState({companyLogoUrl: newState.globalConfig.companyLogoUrl})
+  };
 
   handleFormChange = (e, fieldName) => {
     let newForm = this.state.form
@@ -66,8 +76,6 @@ class SignIn extends Component {
     
       if(response.data.message) { throw new Error(response.data)}
 
-      console.log('signed in successfully:', response.data);
-
       globalVars.setUser(response.data)
       globalVars.setIsLoading(false)
 
@@ -83,12 +91,14 @@ class SignIn extends Component {
   render() {
     const {errors} = this.state
 
+    console.log("globalVars?.getGlobalConfig()", this.state?.companyLogoUrl)
+
     return (
       <SafeAreaView className="bg-primary h-full">
         <ScrollView className='pl-8 pr-8'>
           <View style={{ width: 250, height: 250, borderRadius: 20, overflow: 'hidden', display: 'flex', alignSelf: 'center' }}>
             <Image 
-              source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbQLGnT0RH-Rh0_5NefuPRVbUAXU0CxPfpDw&s' }}  
+              source={{ uri: this.state?.companyLogoUrl }}  
               resizeMode="contain" 
               style={{ width: '100%', height: '100%' }} 
             />

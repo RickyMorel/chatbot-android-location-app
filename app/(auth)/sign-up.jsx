@@ -7,6 +7,7 @@ import CustomButton from '../../components/CustomButton';
 import Constants from 'expo-constants';
 import FormField from '../../components/FormField';
 import Utils from '../Utils';
+import globalVars from '../globalVars';
 
 class SignUp extends Component {
   constructor() {
@@ -89,7 +90,7 @@ class SignUp extends Component {
         <ScrollView className='pl-8 pr-8'>
           <View style={{ width: 250, height: 250, borderRadius: 20, overflow: 'hidden', display: 'flex', alignSelf: 'center' }}>
             <Image 
-              source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbQLGnT0RH-Rh0_5NefuPRVbUAXU0CxPfpDw&s' }}  
+              source={{ uri: globalVars?.getGlobalConfig()?.companyLogoUrl }}  
               resizeMode="contain" 
               style={{ width: '100%', height: '100%' }} 
             />

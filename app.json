@@ -1,33 +1,55 @@
 {
   "expo": {
-    "name": "react_native_tutorial",
-    "slug": "react_native_tutorial",
+    "name": "WhatsBot Pedidos",
+    "slug": "whatsbot-pedidos",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "icon": "./assets/icon.png",
+    "scheme": "whatsbot-pedidos",
     "userInterfaceStyle": "automatic",
+    "extra": {
+      "apiUrl": "http://192.168.100.4:3000",
+      "anotherVar": "value",
+      "eas": {
+        "projectId": "4272d3a6-e7c9-425f-95ce-fb977f0ca7d9"
+      }
+    },
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A"
+      },
+      "bundleIdentifier": "whatsbot"
     },
     "android": {
+      "permissions": [
+        "INTERNET"
+      ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAABDFNQWqSoqDeJBIAUCHfxInlTDtRp6A"
+        }
+      },
+      "package": "com.ricky_mexx.whatsbotpedidos",
+      "usesCleartextTraffic": true
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/icon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [ "expo-build-properties", { "android": { "usesCleartextTraffic": true } } ] 
     ],
     "experiments": {
       "typedRoutes": true

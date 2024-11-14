@@ -1,21 +1,43 @@
-import { TouchableOpacity, Text } from 'react-native'
+import { TouchableOpacity, Text, Image } from 'react-native'
 import React, { Component } from 'react'
+import IconElement from './IconElement';
+import Colors from '../app/colors';
 
 export class CustomButton extends Component {
   render() {
-    const {title, handlePress, containerStyles, textStyles, isLoading} = this.props
+    const {title, handlePress, containerStyles, textStyles, isLoading, icon, iconSize, color, hasError = false, iconType = 1} = this.props
 
     return (
       <TouchableOpacity 
-        className={`bg-secondary rounded-xl min-h-[62px] justify-center items-center ${containerStyles} ${isLoading ? 'opacity-50' : ''}`} 
+        className={`w-full h-full rounded-xl justify-center items-center ${containerStyles} ${isLoading ? 'opacity-50' : ''}`} 
+        style={style(hasError, color)}
         onPress={handlePress}
         activeOpacity={0.7}
         disabled={isLoading}
     >
-        <Text className={`text-primary font-psemibold text-lg ${textStyles}`}>{title}</Text>
+        {
+          icon ? 
+          <IconElement icon={icon} iconSize={iconSize} iconType={iconType}/>
+          : 
+          <></>
+        }
+        {title ? <Text className={`${hasError ? 'text-red-600' : "text-primary"} font-psemibold text-lg ${textStyles} ${icon ? 'ml-1' : ''}`}>{title}</Text> : <></>}
       </TouchableOpacity>
     )
   }
 }
+
+const style = (hasError, color) => ({
+  borderWidth: 2,
+  borderRadius: 16, 
+  borderColor: hasError ? '#ef4444' : '#ffffff',
+  backgroundColor: color ?? Colors.Secondary, 
+  flexDirection: 'row',
+  alignItems: 'center',
+  shadowColor: hasError ? '#FF0000' : '#000',
+  shadowOffset: { width: 0, height: 4 }, 
+  shadowOpacity: 0.3, 
+  shadowRadius: 6, 
+})
 
 export default CustomButton

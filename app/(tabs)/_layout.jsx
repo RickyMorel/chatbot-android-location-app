@@ -1,12 +1,14 @@
-import { View, Text, Image } from 'react-native'
-import { Tabs, Redirect } from 'expo-router'
-
-import { icons } from '../../constants'
+import { MaterialIcons } from '@expo/vector-icons';
+import { Tabs } from 'expo-router';
+import { Text, View } from 'react-native';
+import Colors from '../colors';
+import Spinner from '../../components/Spinner';
+import { LoadingProvider } from '../LoadingProvider';
 
 const TabIcon = ({icon, color, name ,focused}) => {
     return (
         <View className="items-center justify-center gap-2">
-            <Image source={icon} resizeMode="contain" tintColor={color} className="w-6 h-6"/>
+            <MaterialIcons name={icon} size={24} color={color} className="w-6 h-6"/> 
             <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{color: color}}>
                 {name}
             </Text>
@@ -16,31 +18,33 @@ const TabIcon = ({icon, color, name ,focused}) => {
 
 const TabsLayout = () => {
   return (
-      <Tabs screenOptions={tabStyle}>
-        <Tabs.Screen name="home" options={{title: 'Home', headerShown: false, tabBarIcon: ({color, focused}) => (
-            <TabIcon icon={icons.home} color={color} name="Home" focused={focused}/>
-        )}}/>
-        <Tabs.Screen name="bookmark" options={{title: 'Bookmark', headerShown: false, tabBarIcon: ({color, focused}) => (
-            <TabIcon icon={icons.bookmark} color={color} name="Bookmark" focused={focused}/>
-        )}}/>
-        <Tabs.Screen name="create" options={{title: 'Create', headerShown: false, tabBarIcon: ({color, focused}) => (
-            <TabIcon icon={icons.plus} color={color} name="Create" focused={focused}/>
-        )}}/>
-        <Tabs.Screen name="profile" options={{title: 'Profile', headerShown: false, tabBarIcon: ({color, focused}) => (
-            <TabIcon icon={icons.profile} color={color} name="Profile" focused={focused}/>
-        )}}/>
-      </Tabs>
+    <>
+      <LoadingProvider>
+        <Spinner/>
+      </LoadingProvider>
+        <Tabs screenOptions={tabStyle}>
+            <Tabs.Screen name="map" options={{title: 'Mapa', headerShown: false, tabBarIcon: ({color, focused}) => (
+                <TabIcon icon="map" color={color} name="Mapa" focused={focused}/>
+            )}}/>
+            <Tabs.Screen name="sales" options={{title: 'Ventas', headerShown: false, tabBarIcon: ({color, focused}) => (
+                <TabIcon icon="payment" color={color} name="Ventas" focused={focused}/>
+            )}}/>
+            <Tabs.Screen name="stock" options={{title: 'Stock', headerShown: false, tabBarIcon: ({color, focused}) => (
+                <TabIcon icon="local-shipping" color={color} name="Stock" focused={focused}/>
+            )}}/>
+        </Tabs>
+    </>
   )
 }
 
 const tabStyle = {
     tabBarShowLabel: false,
-    tabBarActiveTintColor: '#FFA001',
-    tabBarInactiveTintColor: '#CDCDE0',
+    tabBarActiveTintColor: Colors.Secondary,
+    tabBarInactiveTintColor: '#1A1A1A',
     tabBarStyle: {
-        backgroundColor: '#161622',
+        backgroundColor: Colors.Primary,
         borderTopWidth: 1,
-        borderTopColor: '#232533',
+        borderTopColor: "#E5E5E5",
         height: 84
     }
 }

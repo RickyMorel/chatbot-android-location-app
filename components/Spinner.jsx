@@ -6,8 +6,6 @@ import { useLoading } from '../app/LoadingProvider';
 const Spinner = () => {
   const isLoading = useLoading(); // Get loading state from context
 
-  console.log("Spinner Loading", isLoading);
-
   return (
     isLoading && (
       <View style={{

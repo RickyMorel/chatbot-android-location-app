@@ -27,7 +27,6 @@ class SignIn extends Component {
   }
 
   updateGlobalConfig = (newState) => {
-    console.log("updateGlobalConfig", newState)
     this.setState({companyLogoUrl: newState.globalConfig.companyLogoUrl})
   };
 
@@ -91,8 +90,6 @@ class SignIn extends Component {
   
   render() {
     const {errors} = this.state
-
-    console.log("globalVars?.getGlobalConfig()", this.state?.companyLogoUrl)
 
     return (
       <SafeAreaView className="bg-primary h-full">

@@ -24,7 +24,7 @@ class GlobalVars {
 
   setGlobalConfig = (globalConfig) => {
     this.globalData.globalConfig = globalConfig;
-    console.log("setGlobalConfig")
+
     this.notifySubscribers(); // Notify all subscribers on change
   };
 

@@ -50,6 +50,7 @@ const MapComponent = ({ userLocation, orderLocations, storeLocation, allOrders }
     try {
       const url = `${Utils.backendLink}/client-location/getAllTodaysClientLocations`;
       const response = await axios.get(url);
+      console.log("response.data", response.data)
       setTodaysClientLocations(response.data);
     } catch (error) {
       console.log('Error:', error.message);

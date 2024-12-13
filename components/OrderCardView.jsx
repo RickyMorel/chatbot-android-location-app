@@ -68,7 +68,7 @@ const OrderCardView = ({ currentOrder, isOpen, closeCallback }) => {
               />
             </View>
             <View className="flex-row items-center justify-center mt-2">
-              <View className='h-[40px] w-[130px]'>
+              <View className='h-[40px] w-[150px]'>
                 <CustomButton 
                   title="Hacer Venta" 
                   handlePress={() => { router.push(`/create-sale?data=${serializedData}`); closeCallback(); }} 

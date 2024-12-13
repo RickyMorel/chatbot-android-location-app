@@ -21,18 +21,21 @@ const RootLayout = () => {
   })
 
   const fetchGlobalConfig = async () => {
+    console.log("TRY fetchGlobalConfig")
     try {
       const response = await axios.get(`${Utils.backendLink}/global-config`);
 
       console.log("fetchGlobalConfig", response.data?.companyLogoUrl)
       
       globalVars.setGlobalConfig(response.data)
-    } catch (error) {}
+    } catch (error) {
+      console.log("ERROR", error)
+    }
   }
 
   useEffect(() => {
     fetchGlobalConfig()
-    if(error) throw error
+    if(error) {console.log("ERROR", error); throw error}
     if(fontsLoaded) SplashScreen.hideAsync()
   }, [fontsLoaded, error])
 

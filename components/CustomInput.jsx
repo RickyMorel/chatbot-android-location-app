@@ -17,7 +17,7 @@ export class CustomInput extends Component {
     return (
         <View  style={formStyle(hasError)}>
             <TextInput 
-                className="flex-1 font-psemibold text-base text-center" 
+                className="font-psemibold" 
                 value={this.state.value} 
                 placeholder={placeholder}
                 placeholderTextColor= {hasError ? '#ef4444' : "#7b7b8b"}
@@ -35,9 +35,7 @@ const formStyle = (hasError) => ({
   borderColor: hasError ? '#ef4444' : '#ffffff',
   width: 45,
   height: 45,
-  // paddingHorizontal: 16,
   backgroundColor: '#f1f5f9', 
-  flexDirection: 'row',
   alignItems: 'center',
   shadowColor: hasError ? '#FF0000' : '#000',
   shadowOffset: { width: 0, height: 4 }, 

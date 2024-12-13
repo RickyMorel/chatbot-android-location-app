@@ -19,7 +19,7 @@ export class OrderCard extends Component {
             <View className='flex-row bg-primary rounded-lg m-1 shadow-md h-[80px] w-[230px]'>
                 <View className='w-2' style={{backgroundColor: Colors.Secondary}} />      
                 <View className='flex-1 pl-4 mt-3'>
-                    <Text className='text-black font-bold'>{item.name}</Text>
+                    <Text className='text-black font-bold'>{Utils.getCutName(item.name)}</Text>
                     <Text className='text-gray-600'>{amount} productos. Valor: {Utils.formatCurrency(item.totalSold)}</Text>
                 </View>
                 <View className="w-[50px] h-[30px] mt-6 mr-2">

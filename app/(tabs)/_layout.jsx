@@ -7,9 +7,12 @@ import { LoadingProvider } from '../LoadingProvider';
 
 const TabIcon = ({icon, color, name ,focused}) => {
     return (
-        <View className="items-center justify-center gap-2">
-            <MaterialIcons name={icon} size={24} color={color} className="w-6 h-6"/> 
-            <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{color: color}}>
+        <View className="items-center justify-center" style={{ flex: 1, width: 100 }}>
+            <MaterialIcons name={icon} size={24} color={color} />
+            <Text
+                className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`}
+                style={{ color: color, textAlign: 'center' }}
+            >
                 {name}
             </Text>
         </View>
@@ -45,7 +48,7 @@ const tabStyle = {
         backgroundColor: Colors.Primary,
         borderTopWidth: 1,
         borderTopColor: "#E5E5E5",
-        height: 84
+        paddingTop: 8,
     }
 }
 

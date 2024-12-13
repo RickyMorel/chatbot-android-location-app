@@ -49,7 +49,7 @@ export class CardsView extends Component {
           viewabilityConfig={{
             itemVisiblePercentThreshold: 70
           }}
-          contentOffset={{x: 170}}
+          contentOffset={{x: 0}}
         />
       </View>
     )

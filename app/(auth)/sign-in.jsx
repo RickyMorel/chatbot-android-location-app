@@ -85,6 +85,7 @@ class SignIn extends Component {
       this.setState({
         errors: [error.response.data.message]
       })
+      globalVars.setIsLoading(false)
     }
   };
   
@@ -95,7 +96,7 @@ class SignIn extends Component {
 
     return (
       <SafeAreaView className="bg-primary h-full">
-        <ScrollView className='pl-8 pr-8'>
+        <ScrollView className='pl-8 pr-8 pt-8'>
           <View style={{ width: 250, height: 250, borderRadius: 20, overflow: 'hidden', display: 'flex', alignSelf: 'center' }}>
             <Image 
               source={{ uri: this.state?.companyLogoUrl }}  
